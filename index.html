@@ -19,7 +19,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
-:root{--bg:#f0f9ff;--card:#fff;--primary:#0ea5e9;--accent:#10b981;--border:rgba(14,165,233,.08);--blight:#f0f9ff;--txt:#0c4a6e;--t2:#0284c7;--t3:#7dd3fc;--prime:#10b981;--strong:#34d399;--mod:#fbbf24;--caution:#f97316;--avoid:#ef4444;--r:20px;--sh:0 4px 15px rgba(14,165,233,.06);--shl:0 15px 40px rgba(14,165,233,.1)}
+:root{--bg:#f0f9ff;--card:#fff;--primary:#0ea5e9;--accent:#10b981;--border:rgba(14,165,233,.08);--blight:#f0f9ff;--xt:#0c4a6e;--t2:#0284c7;--t3:#7dd3fc;--prime:#10b981;--strong:#34d399;--mod:#fbbf24;--caution:#f97316;--avoid:#ef4444;--r:20px;--sh:0 4px 15px rgba(14,165,233,.06);--shl:0 15px 40px rgba(14,165,233,.1)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e0f2fe 0%,#ffffff 40%,#ecfdf5 100%);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100vh}
 ::selection{background:#0ea5e9;color:#fff}
@@ -1330,7 +1330,7 @@ function renderCards(){
   }).join("");
 }
 
-function switchTab(tab){
+function switchTab(tab, skipHash){
   document.querySelectorAll(".tab-content").forEach(function(el){el.classList.remove("active")});
   document.querySelectorAll(".tab-btn").forEach(function(el){el.classList.remove("active")});
   var tabEl=document.getElementById("tab-"+tab);
@@ -1343,7 +1343,20 @@ function switchTab(tab){
   if(tab==="opp"){renderOpportunityTab()}
   if(tab==="profile"){renderProfileDashboard()}
   if(typeof UserTracker!=='undefined')UserTracker.trackTabView(tab);
+  if(!skipHash){history.replaceState(null,null,"#"+tab)}
 }
+
+// Hash-based routing for deep links (Google Ads sitelinks etc.)
+var HASH_ALIASES={"features":"cards","analysis":"map","market":"map","prime":"opp","zones":"opp","download":"about","app":"about"};
+function handleHashRoute(){
+  var h=location.hash.replace("#","").toLowerCase();
+  if(!h)return;
+  if(HASH_ALIASES[h])h=HASH_ALIASES[h];
+  var valid=["map","cards","opp","profile","about"];
+  if(valid.indexOf(h)!==-1)switchTab(h,true);
+}
+window.addEventListener("hashchange",handleHashRoute);
+window.addEventListener("DOMContentLoaded",function(){setTimeout(handleHashRoute,500)});
 
 
 // === CONSTRAINED PRIME LOGIC ===
