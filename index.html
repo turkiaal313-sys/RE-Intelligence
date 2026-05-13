@@ -9,11 +9,9 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18132511973"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','AW-18132511973');</script>
-<!-- Google Ads conversion event - fires on page load -->
-<script>window.addEventListener('load',function(){if(typeof gtag==='function'){gtag('event','conversion',{'send_to':'AW-18132511973/O_luCIPD_KUcEOXZoMZD'});}});</script>
+<!-- Firebase Auth SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
 <style>
 :root{--bg:#f0f9ff;--card:#fff;--primary:#0ea5e9;--accent:#10b981;--border:rgba(14,165,233,.08);--blight:#f0f9ff;--txt:#0c4a6e;--t2:#0284c7;--t3:#7dd3fc;--prime:#10b981;--strong:#34d399;--mod:#fbbf24;--caution:#f97316;--avoid:#ef4444;--r:20px;--sh:0 4px 15px rgba(14,165,233,.06);--shl:0 15px 40px rgba(14,165,233,.1)}
 *{margin:0;padding:0;box-sizing:border-box}
@@ -594,6 +592,7 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
         <h3>Create Account</h3>
         <div class="profile-form-group"><label>Full Name</label><input type="text" id="regName" placeholder="Your name"></div>
         <div class="profile-form-group"><label>Email</label><input type="email" id="regEmail" placeholder="email@example.com"></div>
+        <div class="profile-form-group"><label>Password</label><input type="password" id="regPassword" placeholder="Min 6 characters" minlength="6"></div>
         <div class="profile-form-group"><label>Phone</label><input type="tel" id="regPhone" placeholder="+966..."></div>
         <div class="profile-form-group"><label>Investment Interest</label>
           <select id="regInterest"><option>General</option><option>Retail</option><option>Office</option><option>Luxury</option><option>Tech</option></select>
@@ -622,7 +621,9 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
       <div id="profileLogin" class="profile-section" style="display:none">
         <h3>Login</h3>
         <div class="profile-form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="email@example.com"></div>
+        <div class="profile-form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Your password"></div>
         <button class="profile-btn profile-btn-primary" onclick="loginUser()">Login</button>
+        <div style="text-align:center;margin-top:10px"><a style="font-size:12px;color:var(--t2);cursor:pointer" onclick="resetPassword()">Forgot password?</a></div>
       </div>
     </div>
     <!-- Dashboard (shown when logged in) -->
@@ -894,18 +895,6 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 
   <!-- Copyright -->
   <div class="pro-footer-copy">&copy; 2026 RE Intelligence. All rights reserved.</div>
-
-  <!-- Disclaimer -->
-  <div style="padding:16px 20px;background:var(--blight);border-top:1px solid var(--border)">
-    <div style="font-size:10px;color:var(--t3);line-height:1.6;text-align:center;font-weight:500">
-      <strong style="font-size:11px;color:var(--t2)">Disclaimer</strong><br>
-      This data is of a research and advisory nature, provided for informational and educational purposes only, and does not constitute a recommendation or any legal or financial obligation in any form. Each party bears the responsibility of conducting independent verification, study, and due diligence before making any decision or acting based on this data.
-    </div>
-    <div style="font-size:10px;color:var(--t3);line-height:1.8;text-align:center;font-weight:500;margin-top:10px;direction:rtl;font-family:'Segoe UI',Tahoma,sans-serif">
-      <strong style="font-size:11px;color:var(--t2)">&#1573;&#1582;&#1604;&#1575;&#1569; &#1605;&#1587;&#1572;&#1608;&#1604;&#1610;&#1577;</strong><br>
-      &#1578;&#1615;&#1593;&#1583; &#1607;&#1584;&#1607; &#1575;&#1604;&#1576;&#1610;&#1575;&#1606;&#1575;&#1578; &#1584;&#1575;&#1578; &#1591;&#1576;&#1610;&#1593;&#1577; &#1576;&#1581;&#1579;&#1610;&#1577; &#1608;&#1573;&#1585;&#1588;&#1575;&#1583;&#1610;&#1577;&#1548; &#1608;&#1578;&#1615;&#1602;&#1583;&#1605; &#1604;&#1571;&#1594;&#1585;&#1575;&#1590; &#1605;&#1593;&#1604;&#1608;&#1605;&#1575;&#1578;&#1610;&#1577; &#1608;&#1578;&#1593;&#1604;&#1610;&#1605;&#1610;&#1577; &#1601;&#1602;&#1591;&#1548; &#1608;&#1604;&#1575; &#1578;&#1588;&#1603;&#1604; &#1578;&#1608;&#1589;&#1610;&#1577; &#1571;&#1608; &#1575;&#1604;&#1578;&#1586;&#1575;&#1605;&#1611;&#1575; &#1602;&#1575;&#1606;&#1608;&#1606;&#1610;&#1611;&#1575; &#1571;&#1608; &#1605;&#1575;&#1604;&#1610;&#1611;&#1575; &#1576;&#1571;&#1610; &#1588;&#1603;&#1604; &#1605;&#1606; &#1575;&#1604;&#1571;&#1588;&#1603;&#1575;&#1604;. &#1608;&#1610;&#1578;&#1581;&#1605;&#1604; &#1603;&#1604; &#1591;&#1585;&#1601; &#1605;&#1587;&#1572;&#1608;&#1604;&#1610;&#1577; &#1573;&#1580;&#1585;&#1575;&#1569; &#1575;&#1604;&#1578;&#1581;&#1602;&#1602; &#1608;&#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1608;&#1575;&#1604;&#1593;&#1606;&#1575;&#1610;&#1577; &#1575;&#1604;&#1605;&#1607;&#1606;&#1610;&#1577; &#1575;&#1604;&#1604;&#1575;&#1586;&#1605;&#1577; &#1576;&#1589;&#1608;&#1585;&#1577; &#1605;&#1587;&#1578;&#1602;&#1604;&#1577; &#1602;&#1576;&#1604; &#1575;&#1578;&#1582;&#1575;&#1584; &#1571;&#1610; &#1602;&#1585;&#1575;&#1585; &#1571;&#1608; &#1575;&#1604;&#1578;&#1589;&#1585;&#1601; &#1576;&#1606;&#1575;&#1569;&#1611; &#1593;&#1604;&#1609; &#1607;&#1584;&#1607; &#1575;&#1604;&#1576;&#1610;&#1575;&#1606;&#1575;&#1578;.
-    </div>
-  </div>
 </div>
 </div>
 
@@ -1326,7 +1315,7 @@ function renderCards(){
   }).join("");
 }
 
-function switchTab(tab, skipHash){
+function switchTab(tab){
   document.querySelectorAll(".tab-content").forEach(function(el){el.classList.remove("active")});
   document.querySelectorAll(".tab-btn").forEach(function(el){el.classList.remove("active")});
   var tabEl=document.getElementById("tab-"+tab);
@@ -1339,20 +1328,7 @@ function switchTab(tab, skipHash){
   if(tab==="opp"){renderOpportunityTab()}
   if(tab==="profile"){renderProfileDashboard()}
   if(typeof UserTracker!=='undefined')UserTracker.trackTabView(tab);
-  if(!skipHash){history.replaceState(null,null,"#"+tab)}
 }
-
-// Hash-based routing for deep links (Google Ads sitelinks etc.)
-var HASH_ALIASES={"features":"cards","analysis":"map","market":"map","prime":"opp","zones":"opp","download":"about","app":"about"};
-function handleHashRoute(){
-  var h=location.hash.replace("#","").toLowerCase();
-  if(!h)return;
-  if(HASH_ALIASES[h])h=HASH_ALIASES[h];
-  var valid=["map","cards","opp","profile","about"];
-  if(valid.indexOf(h)!==-1)switchTab(h,true);
-}
-window.addEventListener("hashchange",handleHashRoute);
-window.addEventListener("DOMContentLoaded",function(){setTimeout(handleHashRoute,500)});
 
 
 // === CONSTRAINED PRIME LOGIC ===
@@ -2421,252 +2397,235 @@ aiSearch = function(query) {
   return _originalAiSearch(query);
 };
 
-// === 5. USER PROFILE SYSTEM ===
-function getProfile() {
-  try { return JSON.parse(localStorage.getItem('re_user_profile')) || null; }
-  catch(e) { return null; }
-}
-function saveProfile(p) { localStorage.setItem('re_user_profile', JSON.stringify(p)); }
+// === 5. USER PROFILE SYSTEM (Firebase Auth) ===
 
-// ========== EMAIL VERIFICATION SYSTEM ==========
-// EmailJS Config — Replace these with your EmailJS credentials:
-// 1. Go to https://www.emailjs.com and create a free account
-// 2. Add an Email Service (Gmail, Outlook, etc.) → copy the Service ID
-// EmailJS configured with info@reintelligence.info SMTP service
-// Template variables: {{email}}, {{to_name}}, {{passcode}}
+// --- Firebase Initialization ---
+var firebaseConfig = {
+  apiKey: "AIzaSyC-zN3w38ktYHT0FpkgBVrPQnix4_yXMP8",
+  authDomain: "re-intelligence-cc426.firebaseapp.com",
+  projectId: "re-intelligence-cc426",
+  storageBucket: "re-intelligence-cc426.firebasestorage.app",
+  messagingSenderId: "472534867451",
+  appId: "1:472534867451:web:db132b8f90570b3c047f5e",
+  measurementId: "G-GS7XMZRDHM"
+};
+firebase.initializeApp(firebaseConfig);
+var firebaseAuth = firebase.auth();
+
+// Current user profile (kept in memory, synced from Firebase + localStorage extras)
+var currentUserProfile = null;
+
+function getProfile() {
+  return currentUserProfile;
+}
+
+function saveProfile(p) {
+  currentUserProfile = p;
+  // Store non-auth data (favorites, search history, etc.) in localStorage keyed by uid
+  if (p && p.uid) {
+    localStorage.setItem('re_profile_' + p.uid, JSON.stringify({
+      favorites: p.favorites || [],
+      searchHistory: p.searchHistory || [],
+      interest: p.interest || 'General',
+      phone: p.phone || ''
+    }));
+  }
+}
+
+function loadProfileExtras(uid) {
+  try {
+    return JSON.parse(localStorage.getItem('re_profile_' + uid)) || { favorites: [], searchHistory: [], interest: 'General', phone: '' };
+  } catch(e) {
+    return { favorites: [], searchHistory: [], interest: 'General', phone: '' };
+  }
+}
+
+// --- Firebase Auth State Listener ---
+firebaseAuth.onAuthStateChanged(function(user) {
+  if (user) {
+    var extras = loadProfileExtras(user.uid);
+    currentUserProfile = {
+      uid: user.uid,
+      name: user.displayName || '',
+      email: user.email,
+      phone: extras.phone,
+      interest: extras.interest,
+      favorites: extras.favorites,
+      searchHistory: extras.searchHistory,
+      emailVerified: user.emailVerified,
+      createdAt: user.metadata.creationTime ? new Date(user.metadata.creationTime).getTime() : Date.now()
+    };
+    renderProfileDashboard();
+  } else {
+    currentUserProfile = null;
+    var auth = document.getElementById('profileAuth');
+    var dash = document.getElementById('profileDashboard');
+    if (auth) auth.style.display = 'block';
+    if (dash) dash.style.display = 'none';
+  }
+});
+
+// --- EmailJS Config (for welcome emails) ---
 var EMAILJS_CONFIG = {
   publicKey: '2V3oCe5rWRq-j5rhx',
   serviceId: 'service_weq0kuq',
   templateId: 'template_ek7somv'
 };
 
-var pendingVerification = null;
-var verifyResendTimer = null;
-
-function generateVerifyCode() {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-function registerUser() {
-  var name = document.getElementById('regName').value.trim();
-  var email = document.getElementById('regEmail').value.trim();
-  var phone = document.getElementById('regPhone').value.trim();
-  var interest = document.getElementById('regInterest').value;
-  if (!name || !email) { alert('Please fill in name and email'); return; }
-
-  // Validate email format
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address'); return; }
-
-  // Store pending registration and send verification code
-  var code = generateVerifyCode();
-  pendingVerification = {
-    name: name, email: email, phone: phone, interest: interest,
-    code: code, sentAt: Date.now(), attempts: 0
-  };
-
-  sendVerificationEmail(email, name, code);
-  showVerificationStep(email);
-}
-
-function sendVerificationEmail(email, name, code) {
-  // Check if EmailJS is configured
-  if (EMAILJS_CONFIG.publicKey === 'YOUR_EMAILJS_PUBLIC_KEY') {
-    // Dev mode: show code in console and alert for testing
-    console.log('[DEV] Verification code for ' + email + ': ' + code);
-    alert('Dev Mode: Your verification code is ' + code + '\n\n(Configure EmailJS to send real emails)');
-    return;
-  }
-
-  // Initialize EmailJS
+function sendWelcomeEmail(email, name) {
+  if (EMAILJS_CONFIG.publicKey === 'YOUR_EMAILJS_PUBLIC_KEY') return;
   emailjs.init(EMAILJS_CONFIG.publicKey);
-
-  // Send the email
   emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
     email: email,
     to_name: name || 'User',
-    passcode: code
+    passcode: 'Welcome to RE Intelligence!'
   }).then(function() {
-    console.log('Verification email sent to ' + email);
+    console.log('Welcome email sent to ' + email);
   }, function(err) {
-    console.error('Failed to send verification email:', err);
-    alert('Verification code: ' + code + '\n(Email delivery failed — please check EmailJS config)');
+    console.error('Failed to send welcome email:', err);
   });
 }
 
-function showVerificationStep(email) {
-  document.getElementById('profileRegister').style.display = 'none';
-  document.getElementById('profileLogin').style.display = 'none';
-  document.getElementById('profileVerify').style.display = 'block';
-  document.getElementById('verifyEmailDisplay').textContent = email;
+// --- Registration (Firebase) ---
+function registerUser() {
+  var name = document.getElementById('regName').value.trim();
+  var email = document.getElementById('regEmail').value.trim();
+  var password = document.getElementById('regPassword').value;
+  var phone = document.getElementById('regPhone').value.trim();
+  var interest = document.getElementById('regInterest').value;
 
-  // Clear inputs
-  for (var i = 1; i <= 6; i++) {
-    document.getElementById('vc' + i).value = '';
-  }
-  document.getElementById('vc1').focus();
+  if (!name || !email) { alert('Please fill in name and email'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address'); return; }
+  if (!password || password.length < 6) { alert('Password must be at least 6 characters'); return; }
 
-  // Setup auto-advance between digit inputs
-  setupVerifyInputs();
+  // Disable button while creating
+  var btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Creating Account...';
 
-  // Start resend cooldown
-  startResendTimer(60);
-}
+  firebaseAuth.createUserWithEmailAndPassword(email, password)
+    .then(function(userCredential) {
+      // Set display name
+      return userCredential.user.updateProfile({ displayName: name }).then(function() {
+        // Save extra profile data locally keyed by uid
+        var extras = { favorites: [], searchHistory: [], interest: interest, phone: phone };
+        localStorage.setItem('re_profile_' + userCredential.user.uid, JSON.stringify(extras));
 
-function setupVerifyInputs() {
-  for (var i = 1; i <= 6; i++) {
-    (function(idx) {
-      var input = document.getElementById('vc' + idx);
-      input.addEventListener('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-        if (this.value.length === 1 && idx < 6) {
-          document.getElementById('vc' + (idx + 1)).focus();
+        // Build full profile
+        currentUserProfile = {
+          uid: userCredential.user.uid,
+          name: name,
+          email: email,
+          phone: phone,
+          interest: interest,
+          favorites: [],
+          searchHistory: [],
+          emailVerified: userCredential.user.emailVerified,
+          createdAt: Date.now()
+        };
+
+        // Auto-subscribe
+        var subs = [];
+        try { subs = JSON.parse(localStorage.getItem('re_subscribers')) || []; } catch(e) {}
+        var exists = subs.some(function(s) { return s.email === email; });
+        if (!exists) {
+          subs.push({
+            email: email, name: name, source: 'registration', status: 'active',
+            subscribedAt: Date.now(),
+            prefs: { newDistricts: true, scoreChanges: true, weeklyDigest: true }
+          });
+          localStorage.setItem('re_subscribers', JSON.stringify(subs));
         }
-        // Auto-verify when all 6 digits entered
-        if (idx === 6 && this.value.length === 1) {
-          var full = '';
-          for (var j = 1; j <= 6; j++) full += document.getElementById('vc' + j).value;
-          if (full.length === 6) setTimeout(verifyCode, 100);
-        }
+
+        // Send welcome email via EmailJS
+        sendWelcomeEmail(email, name);
+
+        renderProfileDashboard();
       });
-      input.addEventListener('keydown', function(e) {
-        if (e.key === 'Backspace' && this.value === '' && idx > 1) {
-          document.getElementById('vc' + (idx - 1)).focus();
-        }
-      });
-      // Handle paste
-      input.addEventListener('paste', function(e) {
-        e.preventDefault();
-        var pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
-        for (var j = 0; j < Math.min(pasted.length, 6 - idx + 1); j++) {
-          document.getElementById('vc' + (idx + j)).value = pasted[j];
-        }
-        var focusIdx = Math.min(idx + pasted.length, 6);
-        document.getElementById('vc' + focusIdx).focus();
-      });
-    })(i);
-  }
-}
-
-function startResendTimer(seconds) {
-  var timerEl = document.getElementById('verifyTimer');
-  var resendLink = document.getElementById('resendLink');
-  resendLink.style.pointerEvents = 'none';
-  resendLink.style.opacity = '0.4';
-
-  if (verifyResendTimer) clearInterval(verifyResendTimer);
-  var remaining = seconds;
-  timerEl.textContent = 'Resend available in ' + remaining + 's';
-
-  verifyResendTimer = setInterval(function() {
-    remaining--;
-    if (remaining <= 0) {
-      clearInterval(verifyResendTimer);
-      timerEl.textContent = '';
-      resendLink.style.pointerEvents = 'auto';
-      resendLink.style.opacity = '1';
-    } else {
-      timerEl.textContent = 'Resend available in ' + remaining + 's';
-    }
-  }, 1000);
-}
-
-function resendVerification() {
-  if (!pendingVerification) return;
-  var code = generateVerifyCode();
-  pendingVerification.code = code;
-  pendingVerification.sentAt = Date.now();
-  sendVerificationEmail(pendingVerification.email, pendingVerification.name, code);
-  startResendTimer(60);
-}
-
-function verifyCode() {
-  if (!pendingVerification) { alert('No pending verification. Please register again.'); return; }
-
-  var entered = '';
-  for (var i = 1; i <= 6; i++) entered += document.getElementById('vc' + i).value;
-
-  if (entered.length !== 6) { alert('Please enter the full 6-digit code'); return; }
-
-  pendingVerification.attempts++;
-
-  // Check if code expired (10 minutes)
-  if (Date.now() - pendingVerification.sentAt > 600000) {
-    alert('Code expired. Please request a new one.');
-    for (var j = 1; j <= 6; j++) document.getElementById('vc' + j).value = '';
-    document.getElementById('vc1').focus();
-    return;
-  }
-
-  // Check max attempts
-  if (pendingVerification.attempts > 5) {
-    alert('Too many attempts. Please request a new code.');
-    for (var j = 1; j <= 6; j++) document.getElementById('vc' + j).value = '';
-    document.getElementById('vc1').focus();
-    return;
-  }
-
-  if (entered !== pendingVerification.code) {
-    alert('Invalid code. Please try again. (' + (5 - pendingVerification.attempts) + ' attempts remaining)');
-    for (var j = 1; j <= 6; j++) document.getElementById('vc' + j).value = '';
-    document.getElementById('vc1').focus();
-    // Shake animation
-    document.querySelector('.verify-code-row').style.animation = 'none';
-    setTimeout(function() { document.querySelector('.verify-code-row').style.animation = 'shake 0.4s ease'; }, 10);
-    return;
-  }
-
-  // SUCCESS — complete registration
-  var v = pendingVerification;
-  var profile = {
-    name: v.name, email: v.email, phone: v.phone, interest: v.interest,
-    favorites: [], searchHistory: [], createdAt: Date.now(), emailVerified: true, verifiedAt: Date.now()
-  };
-  saveProfile(profile);
-
-  // Auto-subscribe registered users
-  var subs = [];
-  try { subs = JSON.parse(localStorage.getItem('re_subscribers')) || []; } catch(e) {}
-  var exists = subs.some(function(s) { return s.email === v.email; });
-  if (!exists) {
-    subs.push({
-      email: v.email, name: v.name, source: 'registration', status: 'active',
-      subscribedAt: Date.now(),
-      prefs: { newDistricts: true, scoreChanges: true, weeklyDigest: true }
+    })
+    .catch(function(error) {
+      var msg = 'Registration failed.';
+      if (error.code === 'auth/email-already-in-use') msg = 'This email is already registered. Please login instead.';
+      else if (error.code === 'auth/weak-password') msg = 'Password is too weak. Please use at least 6 characters.';
+      else if (error.code === 'auth/invalid-email') msg = 'Invalid email address.';
+      else msg = error.message;
+      alert(msg);
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = 'Create Account';
     });
-    localStorage.setItem('re_subscribers', JSON.stringify(subs));
-  }
-
-  pendingVerification = null;
-  if (verifyResendTimer) clearInterval(verifyResendTimer);
-
-  document.getElementById('profileVerify').style.display = 'none';
-  renderProfileDashboard();
 }
 
-function cancelVerification() {
-  pendingVerification = null;
-  if (verifyResendTimer) clearInterval(verifyResendTimer);
-  document.getElementById('profileVerify').style.display = 'none';
-  document.getElementById('profileRegister').style.display = 'block';
-}
-
+// --- Login (Firebase) ---
 function loginUser() {
   var email = document.getElementById('loginEmail').value.trim();
+  var password = document.getElementById('loginPassword').value;
+
   if (!email) { alert('Please enter your email'); return; }
-  var profile = getProfile();
-  if (profile && profile.email === email) {
-    renderProfileDashboard();
-  } else {
-    alert('No account found. Please register first.');
-  }
+  if (!password) { alert('Please enter your password'); return; }
+
+  var btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Logging in...';
+
+  firebaseAuth.signInWithEmailAndPassword(email, password)
+    .then(function(userCredential) {
+      // onAuthStateChanged will handle the rest
+      console.log('Login successful for ' + email);
+    })
+    .catch(function(error) {
+      var msg = 'Login failed.';
+      if (error.code === 'auth/user-not-found') msg = 'No account found with this email. Please register first.';
+      else if (error.code === 'auth/wrong-password') msg = 'Incorrect password. Please try again.';
+      else if (error.code === 'auth/invalid-credential') msg = 'Invalid email or password. Please try again.';
+      else if (error.code === 'auth/too-many-requests') msg = 'Too many failed attempts. Please try again later.';
+      else msg = error.message;
+      alert(msg);
+    })
+    .finally(function() {
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    });
 }
 
+// --- Forgot Password ---
+function resetPassword() {
+  var email = document.getElementById('loginEmail').value.trim();
+  if (!email) { alert('Please enter your email address first, then click Forgot Password.'); return; }
+  firebaseAuth.sendPasswordResetEmail(email)
+    .then(function() {
+      alert('Password reset email sent to ' + email + '. Check your inbox.');
+    })
+    .catch(function(error) {
+      if (error.code === 'auth/user-not-found') alert('No account found with this email.');
+      else alert('Error: ' + error.message);
+    });
+}
+
+// --- Logout (Firebase) ---
 function logoutUser() {
-  // Keep the profile data but show auth screen
-  var auth = document.getElementById('profileAuth');
-  var dash = document.getElementById('profileDashboard');
-  if (auth) auth.style.display = 'block';
-  if (dash) dash.style.display = 'none';
+  firebaseAuth.signOut().then(function() {
+    currentUserProfile = null;
+    var auth = document.getElementById('profileAuth');
+    var dash = document.getElementById('profileDashboard');
+    if (auth) auth.style.display = 'block';
+    if (dash) dash.style.display = 'none';
+  });
+}
+
+// --- Verification code UI (kept for backwards compatibility, hidden by default) ---
+var pendingVerification = null;
+var verifyResendTimer = null;
+function generateVerifyCode() { return String(Math.floor(100000 + Math.random() * 900000)); }
+function showVerificationStep() {}
+function setupVerifyInputs() {}
+function startResendTimer() {}
+function resendVerification() {}
+function verifyCode() {}
+function cancelVerification() {
+  document.getElementById('profileVerify').style.display = 'none';
+  document.getElementById('profileRegister').style.display = 'block';
 }
 
 function switchProfileAuth(tab) {
@@ -2674,6 +2633,7 @@ function switchProfileAuth(tab) {
   event.target.classList.add('active');
   document.getElementById('profileRegister').style.display = tab === 'register' ? 'block' : 'none';
   document.getElementById('profileLogin').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('profileVerify').style.display = 'none';
 }
 
 function renderProfileDashboard() {
