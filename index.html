@@ -478,6 +478,38 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 .compose-preview{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;margin-top:8px;font-size:12px;color:#94a3b8}
 .compose-preview h5{font-size:11px;color:#a78bfa;margin-bottom:6px;text-transform:uppercase}
 
+/* === ONBOARDING WIZARD === */
+.wiz-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;opacity:0;transition:opacity .3s;pointer-events:none}
+.wiz-backdrop.show{opacity:1;pointer-events:all}
+.wiz-sheet{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:28px 28px 0 0;z-index:9001;padding:28px 20px 36px;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto}
+.wiz-sheet.show{transform:translateY(0)}
+.wiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.wiz-step-label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:1px}
+.wiz-skip{font-size:13px;color:var(--t2);font-weight:600;background:none;border:none;cursor:pointer;padding:4px 0}
+.wiz-title{font-size:22px;font-weight:900;letter-spacing:-.4px;margin-bottom:18px;line-height:28px}
+.wiz-progress{display:flex;gap:6px;margin-bottom:22px}
+.wiz-dot{flex:1;height:4px;border-radius:2px;background:var(--blight);transition:background .3s}
+.wiz-dot.done{background:linear-gradient(90deg,#0ea5e9,#10b981)}
+.wiz-options{display:flex;flex-direction:column;gap:10px}
+.wiz-opt{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:all .2s;text-align:left;width:100%}
+.wiz-opt:hover{border-color:#0ea5e9;background:#f0f9ff}
+.wiz-opt.selected{border-color:#0ea5e9;background:linear-gradient(135deg,#f0f9ff,#ecfdf5);box-shadow:0 2px 12px rgba(14,165,233,.15)}
+.wiz-opt-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center}
+.wiz-opt-text{flex:1}
+.wiz-opt-title{font-size:14px;font-weight:700;color:var(--txt)}
+.wiz-opt-desc{font-size:12px;color:var(--t2);margin-top:2px;line-height:17px}
+.wiz-btn{width:100%;padding:15px;border-radius:16px;border:none;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-size:15px;font-weight:800;cursor:pointer;margin-top:18px;transition:all .2s;box-shadow:0 4px 16px rgba(14,165,233,.3)}
+.wiz-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(14,165,233,.4)}
+.wiz-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+/* How to Use card */
+.howto-step{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--blight)}
+.howto-step:last-child{border-bottom:none}
+.howto-num{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#10b981);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.howto-icon{font-size:18px;width:30px;text-align:center;flex-shrink:0}
+.howto-text{flex:1}
+.howto-title{font-size:14px;font-weight:700;color:var(--txt)}
+.howto-desc{font-size:12px;color:var(--t2);margin-top:2px;line-height:17px}
+
 </style>
 </head>
 <body>
@@ -730,6 +762,56 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
       <div style="display:flex;align-items:flex-start;gap:14px">
         <div style="width:44px;height:44px;border-radius:14px;background:var(--blight);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">&#9989;</div>
         <div><div style="font-size:14px;font-weight:700;margin-bottom:3px">7 V&amp;R Gates</div><div style="font-size:13px;color:var(--t2);line-height:19px">Every score passes through 7 validation &amp; reliability checkpoints before it reaches you</div></div>
+      </div>
+    </div>
+
+    <!-- How to Use -->
+    <div class="acard" style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+        <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#10b981);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🧭</div>
+        <div style="font-size:16px;font-weight:800">How to Use</div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">1</div>
+        <div class="howto-text">
+          <div class="howto-title">Pick a city</div>
+          <div class="howto-desc">Scroll the city bar at the top and tap any city to load its districts on the map</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">2</div>
+        <div class="howto-text">
+          <div class="howto-title">Switch views</div>
+          <div class="howto-desc">Use the bottom tabs — Map for location context, Cards for a ranked grid, Zones for heat-zone overlays</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">3</div>
+        <div class="howto-text">
+          <div class="howto-title">Tap any district</div>
+          <div class="howto-desc">Open the detail drawer to see the full score breakdown, 8 indicators, and the RE Signal</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">4</div>
+        <div class="howto-text">
+          <div class="howto-title">Set your focus</div>
+          <div class="howto-desc">In the Cards tab, choose a filter (Retail, Office, Luxury, Tech) to reweight scores for your specific interest</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">5</div>
+        <div class="howto-text">
+          <div class="howto-title">Ask the AI</div>
+          <div class="howto-desc">Tap the 🔍 button anywhere to search in plain language — try "best walkable zones in Riyadh" or "top districts for luxury"</div>
+        </div>
+      </div>
+      <div class="howto-step">
+        <div class="howto-num">6</div>
+        <div class="howto-text">
+          <div class="howto-title">Save favourites</div>
+          <div class="howto-desc">Tap the ❤️ in any district drawer to save it — find all your saved spots in the Profile tab</div>
+        </div>
       </div>
     </div>
 
@@ -3679,6 +3761,146 @@ openDrawer = function(d) {
   }
 };
 
+// === ONBOARDING WIZARD ===
+var WIZ_KEY = 'rei_onboarded_v1';
+var wizStep = 1;
+var wizAnswers = {};
+
+var WIZ_STEPS = [
+  {
+    title: 'What are you looking to explore?',
+    key: 'goal',
+    options: [
+      { icon: '🏙️', title: 'City insights', desc: 'Discover which districts lead in each city' },
+      { icon: '🏪', title: 'Retail spots', desc: 'Find high-footfall zones ideal for shops & cafes' },
+      { icon: '🏢', title: 'Office locations', desc: 'Uncover professional hubs with strong infrastructure' },
+      { icon: '💎', title: 'Luxury areas', desc: 'Explore premium wealth pockets and upscale zones' },
+      { icon: '🚶', title: 'Walkable zones', desc: 'See the most livable, active, people-friendly areas' },
+      { icon: '🔍', title: 'Just curious', desc: 'Browse freely and see what the data reveals' }
+    ]
+  },
+  {
+    title: 'Which city are you curious about?',
+    key: 'city',
+    options: [
+      { icon: '🇸🇦', title: 'Riyadh', desc: 'Saudi Arabia\'s booming capital — Vision 2030 epicentre' },
+      { icon: '🇸🇦', title: 'Jeddah', desc: 'Red Sea gateway with a thriving coastal lifestyle' },
+      { icon: '🕌', title: 'Makkah', desc: 'Year-round religious tourism & heritage significance' },
+      { icon: '🕌', title: 'Madinah', desc: 'Millennium of Islamic history with growing pilgrim economy' },
+      { icon: '🇦🇪', title: 'Dubai', desc: 'Global luxury, innovation, and tax-free opportunity' },
+      { icon: '🇬🇧', title: 'London', desc: 'World-class capital with deep institutional real estate' },
+      { icon: '🇲🇾', title: 'Kuala Lumpur', desc: 'Southeast Asia\'s rising star for affordable prime zones' },
+      { icon: '🇸🇬', title: 'Singapore', desc: 'Asia\'s most stable, high-density wealth hub' },
+      { icon: '🇺🇸', title: 'New York', desc: 'The benchmark global market for district-level intelligence' }
+    ]
+  },
+  {
+    title: 'What\'s your main focus?',
+    key: 'focus',
+    options: [
+      { icon: '📊', title: 'Overall score', desc: 'Balanced across all 5 scoring categories equally' },
+      { icon: '💰', title: 'Wealth & capital', desc: 'Weighted towards wealth signals and capital flow' },
+      { icon: '🏗️', title: 'Infrastructure', desc: 'Prioritises economic and social infrastructure quality' },
+      { icon: '📍', title: 'Hyperlocal signals', desc: 'Focuses on street-level and neighbourhood-specific data' },
+      { icon: '🎓', title: 'Human capital', desc: 'Highlights education and talent-density in an area' }
+    ]
+  }
+];
+
+function renderWizStep() {
+  var step = WIZ_STEPS[wizStep - 1];
+  document.getElementById('wizStepLabel').textContent = 'Step ' + wizStep + ' of 3';
+  document.getElementById('wizTitle').textContent = step.title;
+  document.getElementById('wizNext').disabled = true;
+
+  // Update progress dots
+  for (var i = 1; i <= 3; i++) {
+    var dot = document.getElementById('wizDot' + i);
+    dot.className = 'wiz-dot' + (i <= wizStep ? ' done' : '');
+  }
+
+  var html = '';
+  step.options.forEach(function(opt, idx) {
+    var isSelected = wizAnswers[step.key] === idx;
+    html += '<button class="wiz-opt' + (isSelected ? ' selected' : '') + '" onclick="selectWizOpt(' + idx + ')">' +
+      '<span class="wiz-opt-icon">' + opt.icon + '</span>' +
+      '<span class="wiz-opt-text"><span class="wiz-opt-title">' + opt.title + '</span>' +
+      '<span class="wiz-opt-desc" style="display:block">' + opt.desc + '</span></span>' +
+      '</button>';
+  });
+  document.getElementById('wizOptions').innerHTML = html;
+
+  if (wizAnswers[step.key] !== undefined) {
+    document.getElementById('wizNext').disabled = false;
+  }
+
+  var nextBtn = document.getElementById('wizNext');
+  nextBtn.textContent = wizStep === 3 ? 'Get started →' : 'Continue →';
+}
+
+function selectWizOpt(idx) {
+  var step = WIZ_STEPS[wizStep - 1];
+  wizAnswers[step.key] = idx;
+  document.querySelectorAll('.wiz-opt').forEach(function(el, i) {
+    el.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('wizNext').disabled = false;
+
+  // On Q2 city selection — auto-switch to that city after wizard
+  if (step.key === 'city') {
+    var cityNames = ['Riyadh','Jeddah','Makkah','Madinah','Dubai','London','Kuala Lumpur','Singapore','New York'];
+    wizAnswers._cityName = cityNames[idx];
+  }
+}
+
+function wizNext() {
+  if (wizStep < 3) {
+    wizStep++;
+    renderWizStep();
+  } else {
+    // Done — apply personalisation and close
+    applyWizardPersonalisation();
+    closeWizard();
+  }
+}
+
+function applyWizardPersonalisation() {
+  // Switch to selected city if chosen
+  if (wizAnswers._cityName && typeof switchCity === 'function') {
+    try { switchCity(wizAnswers._cityName); } catch(e) {}
+  }
+  // Apply focus weight if chosen
+  var focusMap = ['default','wealth','infrastructure','hyperlocal','education'];
+  if (wizAnswers.focus !== undefined && typeof setWeightProfile === 'function') {
+    try { setWeightProfile(focusMap[wizAnswers.focus]); } catch(e) {}
+  }
+}
+
+function openWizard() {
+  wizStep = 1;
+  wizAnswers = {};
+  renderWizStep();
+  document.getElementById('wizBackdrop').classList.add('show');
+  document.getElementById('wizSheet').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeWizard() {
+  document.getElementById('wizBackdrop').classList.remove('show');
+  document.getElementById('wizSheet').classList.remove('show');
+  document.body.style.overflow = '';
+  try { localStorage.setItem(WIZ_KEY, '1'); } catch(e) {}
+}
+
+function initWizard() {
+  var done = false;
+  try { done = !!localStorage.getItem(WIZ_KEY); } catch(e) {}
+  if (!done) {
+    // Small delay so the map renders first
+    setTimeout(openWizard, 900);
+  }
+}
+
 // === INIT ALL V9 FEATURES ===
 document.addEventListener("DOMContentLoaded", function() {
   DataIndex.init();
@@ -3686,7 +3908,8 @@ document.addEventListener("DOMContentLoaded", function() {
   initAdminTrigger();
   updateNotifBadge();
   initEmailBanner();
-  
+  initWizard();
+
   // If profile exists, render dashboard on profile tab visit
   if (getProfile()) {
     // Pre-render for when user clicks profile tab
@@ -3738,6 +3961,23 @@ document.addEventListener("DOMContentLoaded", function() {
   <p>Get notified about new districts, score changes, and weekly insights.</p>
   <input class="email-banner-input" type="email" id="emailBannerInput" placeholder="Enter your email">
   <button class="email-banner-submit" onclick="submitEmailBanner()">Subscribe</button>
+</div>
+
+<!-- Onboarding Wizard -->
+<div class="wiz-backdrop" id="wizBackdrop"></div>
+<div class="wiz-sheet" id="wizSheet">
+  <div class="wiz-header">
+    <span class="wiz-step-label" id="wizStepLabel">Step 1 of 3</span>
+    <button class="wiz-skip" onclick="closeWizard()">Skip</button>
+  </div>
+  <div class="wiz-progress">
+    <div class="wiz-dot" id="wizDot1"></div>
+    <div class="wiz-dot" id="wizDot2"></div>
+    <div class="wiz-dot" id="wizDot3"></div>
+  </div>
+  <div class="wiz-title" id="wizTitle">What are you looking to explore?</div>
+  <div class="wiz-options" id="wizOptions"></div>
+  <button class="wiz-btn" id="wizNext" onclick="wizNext()" disabled>Continue →</button>
 </div>
 
 <!-- Admin Dashboard Overlay -->
