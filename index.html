@@ -478,37 +478,36 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 .compose-preview{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:12px;margin-top:8px;font-size:12px;color:#94a3b8}
 .compose-preview h5{font-size:11px;color:#a78bfa;margin-bottom:6px;text-transform:uppercase}
 
-/* === ONBOARDING WIZARD === */
-.wiz-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;opacity:0;transition:opacity .3s;pointer-events:none}
-.wiz-backdrop.show{opacity:1;pointer-events:all}
-.wiz-sheet{position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:28px 28px 0 0;z-index:9001;padding:28px 20px 36px;transform:translateY(100%);transition:transform .4s cubic-bezier(.4,0,.2,1);max-height:90vh;overflow-y:auto}
-.wiz-sheet.show{transform:translateY(0)}
-.wiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
-.wiz-step-label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:1px}
-.wiz-skip{font-size:13px;color:var(--t2);font-weight:600;background:none;border:none;cursor:pointer;padding:4px 0}
-.wiz-title{font-size:22px;font-weight:900;letter-spacing:-.4px;margin-bottom:18px;line-height:28px}
-.wiz-progress{display:flex;gap:6px;margin-bottom:22px}
-.wiz-dot{flex:1;height:4px;border-radius:2px;background:var(--blight);transition:background .3s}
-.wiz-dot.done{background:linear-gradient(90deg,#0ea5e9,#10b981)}
-.wiz-options{display:flex;flex-direction:column;gap:10px}
-.wiz-opt{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:all .2s;text-align:left;width:100%}
-.wiz-opt:hover{border-color:#0ea5e9;background:#f0f9ff}
-.wiz-opt.selected{border-color:#0ea5e9;background:linear-gradient(135deg,#f0f9ff,#ecfdf5);box-shadow:0 2px 12px rgba(14,165,233,.15)}
-.wiz-opt-icon{font-size:24px;flex-shrink:0;width:36px;text-align:center}
-.wiz-opt-text{flex:1}
-.wiz-opt-title{font-size:14px;font-weight:700;color:var(--txt)}
-.wiz-opt-desc{font-size:12px;color:var(--t2);margin-top:2px;line-height:17px}
-.wiz-btn{width:100%;padding:15px;border-radius:16px;border:none;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-size:15px;font-weight:800;cursor:pointer;margin-top:18px;transition:all .2s;box-shadow:0 4px 16px rgba(14,165,233,.3)}
-.wiz-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(14,165,233,.4)}
-.wiz-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-/* How to Use card */
-.howto-step{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--blight)}
-.howto-step:last-child{border-bottom:none}
-.howto-num{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#10b981);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.howto-icon{font-size:18px;width:30px;text-align:center;flex-shrink:0}
-.howto-text{flex:1}
-.howto-title{font-size:14px;font-weight:700;color:var(--txt)}
-.howto-desc{font-size:12px;color:var(--t2);margin-top:2px;line-height:17px}
+/* ─── Onboarding Wizard ─────────────────────────────────────────────── */
+.wiz-overlay{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .4s;pointer-events:none}
+.wiz-overlay.show{opacity:1;pointer-events:all}
+.wiz-card{background:#fff;border-radius:24px;width:94%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25);transform:translateY(40px);transition:transform .4s cubic-bezier(.4,0,.2,1);position:relative}
+.wiz-overlay.show .wiz-card{transform:translateY(0)}
+.wiz-progress{height:4px;background:#e0f2fe;border-radius:4px 4px 0 0;overflow:hidden}
+.wiz-progress-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .4s}
+.wiz-skip{position:absolute;top:16px;right:16px;background:none;border:none;font-size:13px;font-weight:600;color:#94a3b8;cursor:pointer}
+.wiz-skip:hover{color:var(--txt)}
+.wiz-body{padding:28px 24px 20px}
+.wiz-step-title{font-size:20px;font-weight:800;color:var(--txt);margin-bottom:4px}
+.wiz-step-sub{font-size:13px;color:#64748b;margin-bottom:18px}
+.wiz-options{display:flex;flex-direction:column;gap:8px}
+.wiz-opt{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--border);cursor:pointer;transition:all .2s;background:#fff}
+.wiz-opt:hover{background:#f0f9ff;border-color:#bae6fd}
+.wiz-opt.selected{background:#eff6ff;border-color:var(--primary);box-shadow:0 0 0 3px rgba(14,165,233,.12)}
+.wiz-opt-icon{font-size:22px;flex-shrink:0;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;background:var(--blight)}
+.wiz-opt-text{flex:1;min-width:0}
+.wiz-opt-title{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:2px}
+.wiz-opt-desc{font-size:12px;color:#64748b;line-height:1.4}
+.wiz-footer{padding:16px 24px 24px;display:flex;justify-content:space-between;align-items:center}
+.wiz-back{background:none;border:none;font-size:13px;font-weight:600;color:#94a3b8;cursor:pointer;padding:8px 0}
+.wiz-back:hover{color:var(--txt)}
+.wiz-next{background:linear-gradient(135deg,var(--primary),#0284c7);color:#fff;border:none;padding:12px 28px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(14,165,233,.25)}
+.wiz-next:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(14,165,233,.35)}
+.wiz-next:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.wiz-dots{display:flex;gap:6px;align-items:center}
+.wiz-dot{width:8px;height:8px;border-radius:50%;background:#e2e8f0;transition:all .3s}
+.wiz-dot.active{background:var(--primary);width:20px;border-radius:4px}
+@media(max-width:600px){.wiz-card{border-radius:24px 24px 0 0;max-width:100%;align-self:flex-end;max-height:85vh}}
 
 </style>
 </head>
@@ -766,52 +765,27 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
     </div>
 
     <!-- How to Use -->
-    <div class="acard" style="margin-bottom:20px">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-        <div style="width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#10b981);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🧭</div>
-        <div style="font-size:16px;font-weight:800">How to Use</div>
+    <div class="acard">
+      <div style="font-size:16px;font-weight:800;margin-bottom:14px">How to Use RE Intelligence</div>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">
+        <div style="width:32px;height:32px;border-radius:10px;background:var(--blight);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--primary);flex-shrink:0">1</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px">Pick your city</div><div style="font-size:13px;color:var(--t2);line-height:18px">Select from the tab bar or use the onboarding wizard on first visit</div></div>
       </div>
-      <div class="howto-step">
-        <div class="howto-num">1</div>
-        <div class="howto-text">
-          <div class="howto-title">Pick a city</div>
-          <div class="howto-desc">Scroll the city bar at the top and tap any city to load its districts on the map</div>
-        </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">
+        <div style="width:32px;height:32px;border-radius:10px;background:var(--blight);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--primary);flex-shrink:0">2</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px">Set your business type</div><div style="font-size:13px;color:var(--t2);line-height:18px">Choose Retail, Office, Luxury, Tech, or Default to adjust how districts are scored</div></div>
       </div>
-      <div class="howto-step">
-        <div class="howto-num">2</div>
-        <div class="howto-text">
-          <div class="howto-title">Switch views</div>
-          <div class="howto-desc">Use the bottom tabs — Map for location context, Cards for a ranked grid, Zones for heat-zone overlays</div>
-        </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">
+        <div style="width:32px;height:32px;border-radius:10px;background:var(--blight);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--primary);flex-shrink:0">3</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px">Browse ranked districts</div><div style="font-size:13px;color:var(--t2);line-height:18px">Green = Prime (80-100), use the tier filters to narrow down</div></div>
       </div>
-      <div class="howto-step">
-        <div class="howto-num">3</div>
-        <div class="howto-text">
-          <div class="howto-title">Tap any district</div>
-          <div class="howto-desc">Open the detail drawer to see the full score breakdown, 8 indicators, and the RE Signal</div>
-        </div>
+      <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px">
+        <div style="width:32px;height:32px;border-radius:10px;background:var(--blight);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--primary);flex-shrink:0">4</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px">Tap any district</div><div style="font-size:13px;color:var(--t2);line-height:18px">See the full breakdown across all 38 indicators and 5 scoring categories</div></div>
       </div>
-      <div class="howto-step">
-        <div class="howto-num">4</div>
-        <div class="howto-text">
-          <div class="howto-title">Set your focus</div>
-          <div class="howto-desc">In the Cards tab, choose a filter (Retail, Office, Luxury, Tech) to reweight scores for your specific interest</div>
-        </div>
-      </div>
-      <div class="howto-step">
-        <div class="howto-num">5</div>
-        <div class="howto-text">
-          <div class="howto-title">Ask the AI</div>
-          <div class="howto-desc">Tap the 🔍 button anywhere to search in plain language — try "best walkable zones in Riyadh" or "top districts for luxury"</div>
-        </div>
-      </div>
-      <div class="howto-step">
-        <div class="howto-num">6</div>
-        <div class="howto-text">
-          <div class="howto-title">Save favourites</div>
-          <div class="howto-desc">Tap the ❤️ in any district drawer to save it — find all your saved spots in the Profile tab</div>
-        </div>
+      <div style="display:flex;align-items:flex-start;gap:14px">
+        <div style="width:32px;height:32px;border-radius:10px;background:var(--blight);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:var(--primary);flex-shrink:0">5</div>
+        <div><div style="font-size:14px;font-weight:700;margin-bottom:2px">Save your favourites</div><div style="font-size:13px;color:var(--t2);line-height:18px">Tap the heart icon to bookmark districts for quick comparison later</div></div>
       </div>
     </div>
 
@@ -985,6 +959,18 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 
   <!-- Copyright -->
   <div class="pro-footer-copy">&copy; 2026 RE Intelligence. All rights reserved.</div>
+
+  <!-- Disclaimer -->
+  <div style="padding:16px 20px;background:var(--blight);border-top:1px solid var(--border)">
+    <div style="font-size:10px;color:var(--t3);line-height:1.6;text-align:center;font-weight:500">
+      <strong style="font-size:11px;color:var(--t2)">Disclaimer</strong><br>
+      This data is of a research and advisory nature, provided for informational and educational purposes only, and does not constitute a recommendation or any legal or financial obligation in any form. Each party bears the responsibility of conducting independent verification, study, and due diligence before making any decision or acting based on this data.
+    </div>
+    <div style="font-size:10px;color:var(--t3);line-height:1.8;text-align:center;font-weight:500;margin-top:10px;direction:rtl;font-family:'Segoe UI',Tahoma,sans-serif">
+      <strong style="font-size:11px;color:var(--t2)">&#1573;&#1582;&#1604;&#1575;&#1569; &#1605;&#1587;&#1572;&#1608;&#1604;&#1610;&#1577;</strong><br>
+      &#1578;&#1615;&#1593;&#1583; &#1607;&#1584;&#1607; &#1575;&#1604;&#1576;&#1610;&#1575;&#1606;&#1575;&#1578; &#1584;&#1575;&#1578; &#1591;&#1576;&#1610;&#1593;&#1577; &#1576;&#1581;&#1579;&#1610;&#1577; &#1608;&#1573;&#1585;&#1588;&#1575;&#1583;&#1610;&#1577;&#1548; &#1608;&#1578;&#1615;&#1602;&#1583;&#1605; &#1604;&#1571;&#1594;&#1585;&#1575;&#1590; &#1605;&#1593;&#1604;&#1608;&#1605;&#1575;&#1578;&#1610;&#1577; &#1608;&#1578;&#1593;&#1604;&#1610;&#1605;&#1610;&#1577; &#1601;&#1602;&#1591;&#1548; &#1608;&#1604;&#1575; &#1578;&#1588;&#1603;&#1604; &#1578;&#1608;&#1589;&#1610;&#1577; &#1571;&#1608; &#1575;&#1604;&#1578;&#1586;&#1575;&#1605;&#1611;&#1575; &#1602;&#1575;&#1606;&#1608;&#1606;&#1610;&#1611;&#1575; &#1571;&#1608; &#1605;&#1575;&#1604;&#1610;&#1611;&#1575; &#1576;&#1571;&#1610; &#1588;&#1603;&#1604; &#1605;&#1606; &#1575;&#1604;&#1571;&#1588;&#1603;&#1575;&#1604;. &#1608;&#1610;&#1578;&#1581;&#1605;&#1604; &#1603;&#1604; &#1591;&#1585;&#1601; &#1605;&#1587;&#1572;&#1608;&#1604;&#1610;&#1577; &#1573;&#1580;&#1585;&#1575;&#1569; &#1575;&#1604;&#1578;&#1581;&#1602;&#1602; &#1608;&#1575;&#1604;&#1583;&#1585;&#1575;&#1587;&#1577; &#1608;&#1575;&#1604;&#1593;&#1606;&#1575;&#1610;&#1577; &#1575;&#1604;&#1605;&#1607;&#1606;&#1610;&#1577; &#1575;&#1604;&#1604;&#1575;&#1586;&#1605;&#1577; &#1576;&#1589;&#1608;&#1585;&#1577; &#1605;&#1587;&#1578;&#1602;&#1604;&#1577; &#1602;&#1576;&#1604; &#1575;&#1578;&#1582;&#1575;&#1584; &#1571;&#1610; &#1602;&#1585;&#1575;&#1585; &#1571;&#1608; &#1575;&#1604;&#1578;&#1589;&#1585;&#1601; &#1576;&#1606;&#1575;&#1569;&#1611; &#1593;&#1604;&#1609; &#1607;&#1584;&#1607; &#1575;&#1604;&#1576;&#1610;&#1575;&#1606;&#1575;&#1578;.
+    </div>
+  </div>
 </div>
 </div>
 
@@ -1485,17 +1471,20 @@ function getConstrainedDistricts(city, biz){
 
 function filterByTier(scored){
   if(activeTierFilters.indexOf("all") !== -1) return scored;
+  var showConstrained = activeTierFilters.indexOf("constrained") !== -1;
   return scored.filter(function(d){
     var sc = d.score;
+    var isCP = getConstrainedPrimeInfo(d, currentBiz);
     if(activeTierFilters.indexOf("prime") !== -1 && sc >= 80) return true;
-    if(activeTierFilters.indexOf("strong") !== -1 && sc >= 65 && sc < 80) return true;
+    if(activeTierFilters.indexOf("strong") !== -1 && sc >= 65 && sc < 80){
+      // If constrained filter is off, exclude constrained prime from strong
+      if(isCP && !showConstrained) return false;
+      return true;
+    }
     if(activeTierFilters.indexOf("moderate") !== -1 && sc >= 50 && sc < 65) return true;
     if(activeTierFilters.indexOf("caution") !== -1 && sc >= 35 && sc < 50) return true;
     if(activeTierFilters.indexOf("avoid") !== -1 && sc < 35) return true;
-    if(activeTierFilters.indexOf("constrained") !== -1){
-      var cp = getConstrainedPrimeInfo(d, currentBiz);
-      if(cp) return true;
-    }
+    if(showConstrained && isCP) return true;
     return false;
   });
 }
@@ -1919,6 +1908,227 @@ document.addEventListener("DOMContentLoaded",function(){
   initAISearch();
   initMap();
   renderCards();
+
+  // ─── Onboarding Wizard (always available) ──────────────────────────
+  (function(){
+    var wizSteps = [
+      {
+        title: "What are you looking to explore?",
+        sub: "Pick what matters most — we'll tailor the platform for you",
+        options: [
+          {icon:"&#127942;",title:"The best of the best",desc:"Proven, high-performing districts with no guesswork",action:{type:"tier",value:"prime"}},
+          {icon:"&#128142;",title:"Hidden gems",desc:"Spot areas before they peak — before everyone else does",action:{type:"tier",value:"constrained"}},
+          {icon:"&#127968;",title:"Great places to live",desc:"Affluent, safe, well-educated neighbourhoods",action:{type:"overlay",value:"Rich & Educated"}},
+          {icon:"&#128187;",title:"Tech & innovation zones",desc:"Startups, offices, R&D centres, and think tanks",action:{type:"biz",value:"Tech & Innovation"}},
+          {icon:"&#128092;",title:"Luxury & premium areas",desc:"High-end brands, boutiques, and upscale hospitality",action:{type:"biz",value:"Luxury"}},
+          {icon:"&#9992;&#65039;",title:"Short-term rental hotspots",desc:"High-footfall areas that attract visitors and travellers",action:{type:"combo",tier:"strong",biz:"Retail & F&B"}}
+        ]
+      },
+      {
+        title: "Which city are you curious about?",
+        sub: "Select a city to start exploring",
+        options: [
+          {icon:"&#127480;&#127462;",title:"Riyadh",desc:"Saudi Arabia's fastest-growing economic hub",action:{type:"city",value:"Riyadh"}},
+          {icon:"&#128331;",title:"Makkah",desc:"The world's most visited religious destination",action:{type:"city",value:"Makkah"}},
+          {icon:"&#128332;",title:"Madinah",desc:"Profound spiritual significance with 1,400-year history",action:{type:"city",value:"Madinah"}},
+          {icon:"&#127961;&#65039;",title:"Dubai",desc:"Global crossroads of luxury, business, and innovation",action:{type:"city",value:"Dubai"}},
+          {icon:"&#127468;&#127463;",title:"London",desc:"One of the world's most transparent property markets",action:{type:"city",value:"London"}},
+          {icon:"&#127480;&#127468;",title:"Singapore",desc:"Asia's most stable, connected, and business-friendly city",action:{type:"city",value:"Singapore"}},
+          {icon:"&#127482;&#127480;",title:"New York",desc:"The benchmark global city for urban district intelligence",action:{type:"city",value:"New York"}},
+          {icon:"&#128674;",title:"Jeddah",desc:"Heritage and rapid development on the Red Sea coast",action:{type:"city",value:"Jeddah"}},
+          {icon:"&#127474;&#127486;",title:"Kuala Lumpur",desc:"Southeast Asia's rising business and lifestyle destination",action:{type:"city",value:"Kuala Lumpur"}},
+          {icon:"&#127758;",title:"Show me everything",desc:"Explore and compare across all 9 cities",action:{type:"city",value:"Riyadh"}}
+        ]
+      },
+      {
+        title: "What's your focus?",
+        sub: "This adjusts how districts are scored and ranked",
+        options: [
+          {icon:"&#128722;",title:"Retail",desc:"Weights foot traffic, spending power, and commercial demand",action:{type:"biz",value:"Retail & F&B"}},
+          {icon:"&#127970;",title:"Office & corporate",desc:"Weights connectivity, business infrastructure, and talent",action:{type:"biz",value:"Office"}},
+          {icon:"&#128092;",title:"Luxury",desc:"Weights wealth signals, prestige, and high-end demand",action:{type:"biz",value:"Luxury"}},
+          {icon:"&#128187;",title:"Tech & innovation",desc:"Weights human capital, infrastructure, and R&D density",action:{type:"biz",value:"Tech & Innovation"}},
+          {icon:"&#128065;&#65039;",title:"Just browsing",desc:"Balanced view across all 38 indicators — no bias",action:{type:"biz",value:"Default"}}
+        ]
+      }
+    ];
+
+    var wizStep = 0;
+    var wizSelections = [null, null, null];
+    var overlay = document.getElementById('wizOverlay');
+    var body = document.getElementById('wizBody');
+    var nextBtn = document.getElementById('wizNext');
+    var backBtn = document.getElementById('wizBack');
+    var skipBtn = document.getElementById('wizSkip');
+    var progressFill = document.getElementById('wizProgressFill');
+    var dotsContainer = document.getElementById('wizDots');
+
+    function renderWizStep(){
+      var step = wizSteps[wizStep];
+      progressFill.style.width = ((wizStep+1)/wizSteps.length*100)+'%';
+      backBtn.style.visibility = wizStep === 0 ? 'hidden' : 'visible';
+      nextBtn.textContent = wizStep === wizSteps.length-1 ? 'Get started →' : 'Continue →';
+      nextBtn.disabled = wizSelections[wizStep] === null;
+
+      dotsContainer.innerHTML = '';
+      for(var d=0;d<wizSteps.length;d++){
+        var dot = document.createElement('div');
+        dot.className = 'wiz-dot' + (d===wizStep?' active':'');
+        dotsContainer.appendChild(dot);
+      }
+
+      var html = '<div class="wiz-step-title">'+step.title+'</div>';
+      html += '<div class="wiz-step-sub">'+step.sub+'</div>';
+      html += '<div class="wiz-options">';
+      step.options.forEach(function(opt,i){
+        var sel = wizSelections[wizStep]===i ? ' selected' : '';
+        html += '<div class="wiz-opt'+sel+'" data-idx="'+i+'">';
+        html += '<div class="wiz-opt-icon">'+opt.icon+'</div>';
+        html += '<div class="wiz-opt-text"><div class="wiz-opt-title">'+opt.title+'</div><div class="wiz-opt-desc">'+opt.desc+'</div></div>';
+        html += '</div>';
+      });
+      html += '</div>';
+      body.innerHTML = html;
+
+      body.querySelectorAll('.wiz-opt').forEach(function(el){
+        el.addEventListener('click',function(){
+          var idx = parseInt(el.dataset.idx);
+          wizSelections[wizStep] = idx;
+          body.querySelectorAll('.wiz-opt').forEach(function(o){o.classList.remove('selected')});
+          el.classList.add('selected');
+          nextBtn.disabled = false;
+        });
+      });
+    }
+
+    function applyWizSelections(){
+      // Reset to clean state — baseline: 65+ only (prime + strong)
+      activeTierFilters=["prime","strong"];
+      currentBiz="Default";
+      currentOverlay="Full V&R";
+
+      // Step 1: exploration type — narrows from baseline
+      if(wizSelections[0] !== null){
+        var s1 = wizSteps[0].options[wizSelections[0]].action;
+        if(s1.type==='tier'){
+          // "best of best" → prime only; "hidden gems" → constrained only
+          activeTierFilters=[s1.value];
+        } else if(s1.type==='overlay'){
+          // "great places to live" → baseline + overlay scoring
+          currentOverlay=s1.value;
+          var ovl=document.getElementById('ovLabel');
+          if(ovl) ovl.textContent=s1.value;
+          buildDropdown('ovDrop',OVERLAY_MODES,s1.value,function(v){currentOverlay=v;var ol=document.getElementById('ovLabel');if(ol)ol.textContent=v;renderMarkers()});
+        } else if(s1.type==='biz'){
+          // "tech zones" / "luxury areas" → baseline + biz weights
+          currentBiz=s1.value;
+        } else if(s1.type==='combo'){
+          // "short-term rentals" → baseline + biz weights
+          currentBiz=s1.biz;
+        }
+      }
+
+      // Step 2: city selection
+      if(wizSelections[1] !== null){
+        var s2 = wizSteps[1].options[wizSelections[1]].action;
+        if(s2.type==='city'){
+          currentCity=s2.value;
+          // Rebuild all city tab bars so click handlers use new city
+          if(typeof buildCityTabs==='function'){
+            buildCityTabs('mapCityBar',function(city){currentCity=city;renderMarkers()});
+            buildCityTabs('cardsCityBar',function(city){currentCity=city;renderCards()});
+            buildCityTabs('oppCityBar',function(city){currentCity=city;if(typeof renderOpportunityTab==='function') renderOpportunityTab()});
+          }
+          // Fly map to selected city
+          var cv=CITY_VIEWS[s2.value];
+          if(cv && typeof map!=='undefined'){
+            map.flyTo([cv.lat,cv.lng],12,{duration:1});
+          }
+        }
+      }
+
+      // Step 3: business focus (overrides step 1 biz if both set)
+      if(wizSelections[2] !== null){
+        var s3 = wizSteps[2].options[wizSelections[2]].action;
+        if(s3.type==='biz'){
+          currentBiz=s3.value;
+        }
+      }
+
+      // Sync biz UI: label, dropdown, chips
+      var bizLbl=document.getElementById('bizLabel');
+      if(bizLbl) bizLbl.textContent=currentBiz;
+      buildDropdown('bizDrop',BIZ_TYPES,currentBiz,function(v){currentBiz=v;var bl=document.getElementById('bizLabel');if(bl)bl.textContent=v;renderMarkers();document.querySelectorAll('#bizChips .chip').forEach(function(c){c.classList.toggle('active',c.textContent===v)})});
+      document.querySelectorAll('#bizChips .chip').forEach(function(c){c.classList.toggle('active',c.textContent===currentBiz)});
+
+      // Sync overlay UI
+      var ovlLabel=document.getElementById('ovLabel');
+      if(ovlLabel) ovlLabel.textContent=currentOverlay;
+
+      // Re-render everything
+      if(typeof initTierFilter==='function') initTierFilter();
+      renderMarkers();
+      renderCards();
+      if(typeof renderOpportunityTab==='function') renderOpportunityTab();
+
+      // Switch to Map tab so user sees the result
+      if(typeof switchTab==='function') switchTab('map');
+    }
+
+    function closeWizard(){
+      overlay.classList.remove('show');
+      localStorage.setItem('rei_onboarded_v4','1');
+    }
+
+    function openWizard(){
+      wizStep = 0;
+      wizSelections = [null, null, null];
+      renderWizStep();
+      overlay.classList.add('show');
+    }
+
+    nextBtn.addEventListener('click',function(){
+      if(wizStep < wizSteps.length-1){
+        wizStep++;
+        renderWizStep();
+      } else {
+        applyWizSelections();
+        closeWizard();
+      }
+    });
+
+    backBtn.addEventListener('click',function(){
+      if(wizStep > 0){
+        wizStep--;
+        renderWizStep();
+      }
+    });
+
+    skipBtn.addEventListener('click',function(){
+      closeWizard();
+    });
+
+    // Floating wizard button (bottom-right)
+    var wizBtn = document.createElement('div');
+    wizBtn.id = 'wizFloatBtn';
+    wizBtn.innerHTML = '&#129668;';
+    wizBtn.title = 'Configure Platform';
+    wizBtn.style.cssText = 'position:fixed;bottom:130px;right:16px;z-index:9000;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(245,158,11,.4);transition:transform .2s,box-shadow .2s';
+    wizBtn.addEventListener('mouseenter',function(){wizBtn.style.transform='scale(1.1)';wizBtn.style.boxShadow='0 6px 24px rgba(14,165,233,.5)'});
+    wizBtn.addEventListener('mouseleave',function(){wizBtn.style.transform='scale(1)';wizBtn.style.boxShadow='0 4px 16px rgba(14,165,233,.4)'});
+    wizBtn.addEventListener('click',function(){ openWizard(); });
+    document.body.appendChild(wizBtn);
+
+    // Expose globally so other parts can trigger it
+    window.openWizard = openWizard;
+
+    // Show on first visit only
+    if(!localStorage.getItem('rei_onboarded_v4')){
+      renderWizStep();
+      setTimeout(function(){ overlay.classList.add('show'); },600);
+    }
+  })();
+
 });
 
 
@@ -3761,146 +3971,6 @@ openDrawer = function(d) {
   }
 };
 
-// === ONBOARDING WIZARD ===
-var WIZ_KEY = 'rei_onboarded_v1';
-var wizStep = 1;
-var wizAnswers = {};
-
-var WIZ_STEPS = [
-  {
-    title: 'What are you looking to explore?',
-    key: 'goal',
-    options: [
-      { icon: '🏙️', title: 'City insights', desc: 'Discover which districts lead in each city' },
-      { icon: '🏪', title: 'Retail spots', desc: 'Find high-footfall zones ideal for shops & cafes' },
-      { icon: '🏢', title: 'Office locations', desc: 'Uncover professional hubs with strong infrastructure' },
-      { icon: '💎', title: 'Luxury areas', desc: 'Explore premium wealth pockets and upscale zones' },
-      { icon: '🚶', title: 'Walkable zones', desc: 'See the most livable, active, people-friendly areas' },
-      { icon: '🔍', title: 'Just curious', desc: 'Browse freely and see what the data reveals' }
-    ]
-  },
-  {
-    title: 'Which city are you curious about?',
-    key: 'city',
-    options: [
-      { icon: '🇸🇦', title: 'Riyadh', desc: 'Saudi Arabia\'s booming capital — Vision 2030 epicentre' },
-      { icon: '🇸🇦', title: 'Jeddah', desc: 'Red Sea gateway with a thriving coastal lifestyle' },
-      { icon: '🕌', title: 'Makkah', desc: 'Year-round religious tourism & heritage significance' },
-      { icon: '🕌', title: 'Madinah', desc: 'Millennium of Islamic history with growing pilgrim economy' },
-      { icon: '🇦🇪', title: 'Dubai', desc: 'Global luxury, innovation, and tax-free opportunity' },
-      { icon: '🇬🇧', title: 'London', desc: 'World-class capital with deep institutional real estate' },
-      { icon: '🇲🇾', title: 'Kuala Lumpur', desc: 'Southeast Asia\'s rising star for affordable prime zones' },
-      { icon: '🇸🇬', title: 'Singapore', desc: 'Asia\'s most stable, high-density wealth hub' },
-      { icon: '🇺🇸', title: 'New York', desc: 'The benchmark global market for district-level intelligence' }
-    ]
-  },
-  {
-    title: 'What\'s your main focus?',
-    key: 'focus',
-    options: [
-      { icon: '📊', title: 'Overall score', desc: 'Balanced across all 5 scoring categories equally' },
-      { icon: '💰', title: 'Wealth & capital', desc: 'Weighted towards wealth signals and capital flow' },
-      { icon: '🏗️', title: 'Infrastructure', desc: 'Prioritises economic and social infrastructure quality' },
-      { icon: '📍', title: 'Hyperlocal signals', desc: 'Focuses on street-level and neighbourhood-specific data' },
-      { icon: '🎓', title: 'Human capital', desc: 'Highlights education and talent-density in an area' }
-    ]
-  }
-];
-
-function renderWizStep() {
-  var step = WIZ_STEPS[wizStep - 1];
-  document.getElementById('wizStepLabel').textContent = 'Step ' + wizStep + ' of 3';
-  document.getElementById('wizTitle').textContent = step.title;
-  document.getElementById('wizNext').disabled = true;
-
-  // Update progress dots
-  for (var i = 1; i <= 3; i++) {
-    var dot = document.getElementById('wizDot' + i);
-    dot.className = 'wiz-dot' + (i <= wizStep ? ' done' : '');
-  }
-
-  var html = '';
-  step.options.forEach(function(opt, idx) {
-    var isSelected = wizAnswers[step.key] === idx;
-    html += '<button class="wiz-opt' + (isSelected ? ' selected' : '') + '" onclick="selectWizOpt(' + idx + ')">' +
-      '<span class="wiz-opt-icon">' + opt.icon + '</span>' +
-      '<span class="wiz-opt-text"><span class="wiz-opt-title">' + opt.title + '</span>' +
-      '<span class="wiz-opt-desc" style="display:block">' + opt.desc + '</span></span>' +
-      '</button>';
-  });
-  document.getElementById('wizOptions').innerHTML = html;
-
-  if (wizAnswers[step.key] !== undefined) {
-    document.getElementById('wizNext').disabled = false;
-  }
-
-  var nextBtn = document.getElementById('wizNext');
-  nextBtn.textContent = wizStep === 3 ? 'Get started →' : 'Continue →';
-}
-
-function selectWizOpt(idx) {
-  var step = WIZ_STEPS[wizStep - 1];
-  wizAnswers[step.key] = idx;
-  document.querySelectorAll('.wiz-opt').forEach(function(el, i) {
-    el.classList.toggle('selected', i === idx);
-  });
-  document.getElementById('wizNext').disabled = false;
-
-  // On Q2 city selection — auto-switch to that city after wizard
-  if (step.key === 'city') {
-    var cityNames = ['Riyadh','Jeddah','Makkah','Madinah','Dubai','London','Kuala Lumpur','Singapore','New York'];
-    wizAnswers._cityName = cityNames[idx];
-  }
-}
-
-function wizNext() {
-  if (wizStep < 3) {
-    wizStep++;
-    renderWizStep();
-  } else {
-    // Done — apply personalisation and close
-    applyWizardPersonalisation();
-    closeWizard();
-  }
-}
-
-function applyWizardPersonalisation() {
-  // Switch to selected city if chosen
-  if (wizAnswers._cityName && typeof switchCity === 'function') {
-    try { switchCity(wizAnswers._cityName); } catch(e) {}
-  }
-  // Apply focus weight if chosen
-  var focusMap = ['default','wealth','infrastructure','hyperlocal','education'];
-  if (wizAnswers.focus !== undefined && typeof setWeightProfile === 'function') {
-    try { setWeightProfile(focusMap[wizAnswers.focus]); } catch(e) {}
-  }
-}
-
-function openWizard() {
-  wizStep = 1;
-  wizAnswers = {};
-  renderWizStep();
-  document.getElementById('wizBackdrop').classList.add('show');
-  document.getElementById('wizSheet').classList.add('show');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeWizard() {
-  document.getElementById('wizBackdrop').classList.remove('show');
-  document.getElementById('wizSheet').classList.remove('show');
-  document.body.style.overflow = '';
-  try { localStorage.setItem(WIZ_KEY, '1'); } catch(e) {}
-}
-
-function initWizard() {
-  var done = false;
-  try { done = !!localStorage.getItem(WIZ_KEY); } catch(e) {}
-  if (!done) {
-    // Small delay so the map renders first
-    setTimeout(openWizard, 900);
-  }
-}
-
 // === INIT ALL V9 FEATURES ===
 document.addEventListener("DOMContentLoaded", function() {
   DataIndex.init();
@@ -3908,8 +3978,7 @@ document.addEventListener("DOMContentLoaded", function() {
   initAdminTrigger();
   updateNotifBadge();
   initEmailBanner();
-  initWizard();
-
+  
   // If profile exists, render dashboard on profile tab visit
   if (getProfile()) {
     // Pre-render for when user clicks profile tab
@@ -3963,21 +4032,18 @@ document.addEventListener("DOMContentLoaded", function() {
   <button class="email-banner-submit" onclick="submitEmailBanner()">Subscribe</button>
 </div>
 
-<!-- Onboarding Wizard -->
-<div class="wiz-backdrop" id="wizBackdrop"></div>
-<div class="wiz-sheet" id="wizSheet">
-  <div class="wiz-header">
-    <span class="wiz-step-label" id="wizStepLabel">Step 1 of 3</span>
-    <button class="wiz-skip" onclick="closeWizard()">Skip</button>
+<!-- Onboarding Wizard Overlay -->
+<div class="wiz-overlay" id="wizOverlay">
+  <div class="wiz-card">
+    <div class="wiz-progress"><div class="wiz-progress-fill" id="wizProgressFill" style="width:33.3%"></div></div>
+    <button class="wiz-skip" id="wizSkip">Skip</button>
+    <div class="wiz-body" id="wizBody"></div>
+    <div class="wiz-footer">
+      <button class="wiz-back" id="wizBack" style="visibility:hidden">&larr; Back</button>
+      <div class="wiz-dots" id="wizDots"></div>
+      <button class="wiz-next" id="wizNext" disabled>Continue &rarr;</button>
+    </div>
   </div>
-  <div class="wiz-progress">
-    <div class="wiz-dot" id="wizDot1"></div>
-    <div class="wiz-dot" id="wizDot2"></div>
-    <div class="wiz-dot" id="wizDot3"></div>
-  </div>
-  <div class="wiz-title" id="wizTitle">What are you looking to explore?</div>
-  <div class="wiz-options" id="wizOptions"></div>
-  <button class="wiz-btn" id="wizNext" onclick="wizNext()" disabled>Continue →</button>
 </div>
 
 <!-- Admin Dashboard Overlay -->
