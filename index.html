@@ -12,6 +12,7 @@
 <!-- Firebase Auth SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <!-- Google Analytics (GA4) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-GS7XMZRDHM"></script>
 <script>
@@ -509,9 +510,69 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 .wiz-dot.active{background:var(--primary);width:20px;border-radius:4px}
 @media(max-width:600px){.wiz-card{border-radius:24px 24px 0 0;max-width:100%;align-self:flex-end;max-height:85vh}}
 
+/* ─── Interest Summary Panel ─── */
+#interestPanel{position:fixed;top:80px;right:16px;width:240px;z-index:8000;display:none;flex-direction:column;gap:10px;font-family:'Inter',system-ui,sans-serif;animation:ipSlideIn .4s ease}
+@keyframes ipSlideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+#interestPanel.show{display:flex}
+.ip-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:14px 16px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.ip-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.ip-title{font-weight:700;font-size:13px;color:var(--txt);display:flex;align-items:center;gap:5px}
+.ip-close{background:none;border:none;font-size:14px;color:#94a3b8;cursor:pointer;padding:2px}
+.ip-close:hover{color:var(--txt)}
+.ip-divider{height:1px;background:var(--border);margin-bottom:10px}
+.ip-row{margin-bottom:10px}
+.ip-row-label{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.ip-row-value{font-size:13px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:6px}
+.ip-count{background:#fef3c7;border-radius:10px;padding:7px 10px;margin-bottom:12px;font-size:12px;font-weight:600;color:#92400e;display:flex;align-items:center;gap:5px}
+.ip-actions{display:flex;gap:6px;margin-bottom:8px}
+.ip-btn-save{flex:1;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:10px;padding:9px 8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .2s}
+.ip-btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(245,158,11,.3)}
+.ip-btn-save:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+.ip-btn-discover{flex:1;background:#fff;color:var(--txt);border:1.5px solid var(--border);border-radius:10px;padding:9px 8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .2s}
+.ip-btn-discover:hover{border-color:var(--primary);color:var(--primary);background:#f0f9ff}
+.ip-hint{text-align:center;font-size:10px;color:#94a3b8}
+.ip-saved-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.ip-saved-title{font-weight:700;font-size:13px;color:var(--txt);display:flex;align-items:center;gap:5px}
+.ip-saved-count{font-size:11px;color:#94a3b8}
+.ip-saved-item{display:flex;align-items:center;justify-content:space-between;padding:7px 8px;background:var(--blight);border-radius:8px;margin-bottom:5px;cursor:pointer;transition:all .2s;border:1px solid transparent}
+.ip-saved-item:hover{border-color:var(--primary);background:#f0f9ff}
+.ip-saved-item-text{font-size:11px;font-weight:600;color:var(--txt);display:flex;align-items:center;gap:5px}
+.ip-saved-item-del{background:none;border:none;font-size:12px;color:#94a3b8;cursor:pointer;padding:2px;transition:color .2s}
+.ip-saved-item-del:hover{color:#ef4444}
+.ip-saved-empty{display:flex;align-items:center;justify-content:center;padding:6px 8px;border:1.5px dashed var(--border);border-radius:8px;font-size:10px;color:#94a3b8}
+@media(max-width:768px){#interestPanel{top:auto;bottom:70px;right:8px;left:8px;width:auto;flex-direction:row;gap:8px}
+.ip-card{flex:1;min-width:0}}
+
 </style>
 </head>
 <body>
+
+<!-- Interest Summary Panel -->
+<div id="interestPanel">
+  <div class="ip-card">
+    <div class="ip-header">
+      <span class="ip-title">&#10024; Your interest</span>
+      <button class="ip-close" id="ipClose" title="Close">&#10005;</button>
+    </div>
+    <div class="ip-divider"></div>
+    <div id="ipConfigRows"></div>
+    <div class="ip-count" id="ipDistrictCount">&#128205; 0 districts found</div>
+    <div class="ip-actions">
+      <button class="ip-btn-save" id="ipSaveBtn">&#128278; Save interest</button>
+      <button class="ip-btn-discover" id="ipNavigateBtn" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;font-weight:700">&#128663; Drive there</button>
+      <button class="ip-btn-discover" id="ipDiscoverBtn">&#10024; Discover more</button>
+    </div>
+    <div class="ip-hint" id="ipHint">25 combinations to explore</div>
+  </div>
+  <div class="ip-card" id="ipSavedCard">
+    <div class="ip-saved-header">
+      <span class="ip-saved-title">&#128278; Saved interests</span>
+      <span class="ip-saved-count" id="ipSavedCount">0 / 5</span>
+    </div>
+    <div class="ip-divider"></div>
+    <div id="ipSavedList"></div>
+  </div>
+</div>
 <div class="content-wrap">
 <div class="header">
   <div class="hdr-row">
@@ -1295,7 +1356,8 @@ function openDrawer(d){
       "<div class=\"mgmt-box-title\">"+T('management')+"</div>"+
       "<div class=\"mgmt-box-name\">Tur</div>"+
       "<div class=\"mgmt-box-email\">t-ii@windowslive.com</div>"+
-    "</div>";
+    "</div>"+
+    "<a href=\"https://www.google.com/maps/dir/?api=1&destination="+d.lat+","+d.lng+"\" target=\"_blank\" rel=\"noopener\" style=\"display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 12px rgba(37,99,235,.3)\" onmouseover=\"this.style.transform='scale(1.02)';this.style.boxShadow='0 6px 20px rgba(37,99,235,.4)'\" onmouseout=\"this.style.transform='scale(1)';this.style.boxShadow='0 4px 12px rgba(37,99,235,.3)'\">&#128663; Drive to "+d.name+"</a>";
   drawer.style.display="block";
   drawer.scrollTop=0;
   // Hide cookie banner when drawer opens so it doesn't cover it
@@ -2073,11 +2135,13 @@ document.addEventListener("DOMContentLoaded",function(){
 
       // Switch to Map tab so user sees the result
       if(typeof switchTab==='function') switchTab('map');
+
+      // Show interest summary panel
+      if(typeof showInterestPanel==='function') showInterestPanel();
     }
 
     function closeWizard(){
       overlay.classList.remove('show');
-      localStorage.setItem('rei_onboarded_v4','1');
     }
 
     function openWizard(){
@@ -2122,10 +2186,321 @@ document.addEventListener("DOMContentLoaded",function(){
     // Expose globally so other parts can trigger it
     window.openWizard = openWizard;
 
-    // Show on first visit only
-    if(!localStorage.getItem('rei_onboarded_v4')){
-      renderWizStep();
-      setTimeout(function(){ overlay.classList.add('show'); },600);
+    // Show wizard on every page load
+    renderWizStep();
+    setTimeout(function(){ overlay.classList.add('show'); },600);
+  })();
+
+  // ─── Interest Summary Panel Logic ───────────────────────────────────
+  (function(){
+    var CITY_FLAGS = {
+      'Riyadh':'&#127480;&#127462;','Makkah':'&#127480;&#127462;','Madinah':'&#127480;&#127462;',
+      'Jeddah':'&#127480;&#127462;','Dubai':'&#127462;&#127466;','London':'&#127468;&#127463;',
+      'Singapore':'&#127480;&#127468;','New York':'&#127482;&#127480;','Kuala Lumpur':'&#127474;&#127486;'
+    };
+    var EXPLORE_ICONS = {
+      'prime':'&#127942;','constrained':'&#128142;','Rich & Educated':'&#127968;',
+      'Tech & Innovation':'&#128187;','Luxury':'&#128092;','Retail & F&B':'&#9992;&#65039;',
+      'strong':'&#128170;','Default':'&#128065;&#65039;','Office':'&#127970;',
+      'Full V&R':'&#128202;','Wealth':'&#128176;','Education':'&#127891;'
+    };
+    var MAX_SAVED = 5;
+    var STORAGE_KEY = 'rei_saved_interests';
+    var panel = document.getElementById('interestPanel');
+    var configRows = document.getElementById('ipConfigRows');
+    var districtCount = document.getElementById('ipDistrictCount');
+    var saveBtn = document.getElementById('ipSaveBtn');
+    var discoverBtn = document.getElementById('ipDiscoverBtn');
+    var closeBtn = document.getElementById('ipClose');
+    var savedList = document.getElementById('ipSavedList');
+    var savedCountEl = document.getElementById('ipSavedCount');
+    var hintEl = document.getElementById('ipHint');
+    var currentInterest = null;
+    var cachedInterests = null; // in-memory cache for Firestore data
+
+    function getFirestoreUser(){
+      return firebaseAuth && firebaseAuth.currentUser ? firebaseAuth.currentUser : null;
+    }
+
+    // --- Firestore-backed storage with localStorage fallback ---
+    function getSavedInterests(){
+      // Return cached if available (async load populates this)
+      if(cachedInterests) return cachedInterests;
+      try{ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch(e){ return []; }
+    }
+
+    function setSavedInterests(arr){
+      cachedInterests = arr;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+      // Sync to Firestore if logged in
+      var user = getFirestoreUser();
+      if(user && typeof firestore!=='undefined'){
+        firestore.collection('users').doc(user.uid).set({
+          savedInterests: arr,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, {merge: true}).catch(function(err){
+          console.warn('Firestore save error:', err);
+        });
+      }
+    }
+
+    // Load interests from Firestore on auth state change
+    function loadInterestsFromFirestore(uid){
+      if(!uid || typeof firestore==='undefined') return;
+      firestore.collection('users').doc(uid).get().then(function(doc){
+        if(doc.exists && doc.data().savedInterests){
+          var firestoreInterests = doc.data().savedInterests;
+          // Merge: Firestore is source of truth, but keep local if Firestore is empty
+          var localInterests = [];
+          try{ localInterests = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }catch(e){}
+          // If Firestore has data, use it; if empty but local has data, push local to Firestore
+          if(firestoreInterests.length > 0){
+            cachedInterests = firestoreInterests;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(firestoreInterests));
+          } else if(localInterests.length > 0){
+            // Push local data up to Firestore (first-time sync)
+            cachedInterests = localInterests;
+            firestore.collection('users').doc(uid).set({
+              savedInterests: localInterests,
+              updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, {merge: true});
+          }
+          renderSavedInterests();
+          updateSaveButton();
+        }
+      }).catch(function(err){
+        console.warn('Firestore load error:', err);
+      });
+    }
+
+    // Hook into Firebase auth state
+    firebaseAuth.onAuthStateChanged(function(user){
+      if(user){
+        loadInterestsFromFirestore(user.uid);
+      } else {
+        cachedInterests = null; // Fall back to localStorage
+      }
+    });
+
+    function getExploreLabel(){
+      // Determine exploration label from current state
+      if(activeTierFilters.indexOf('prime')!==-1 && activeTierFilters.length===1) return 'Prime zones';
+      if(activeTierFilters.indexOf('constrained')!==-1) return 'Hidden gems';
+      if(currentOverlay==='Rich & Educated') return 'Great places to live';
+      if(activeTierFilters.indexOf('prime')!==-1 && activeTierFilters.indexOf('strong')!==-1) return 'Prime & Strong';
+      return activeTierFilters.join(' + ');
+    }
+
+    function getExploreIcon(){
+      if(activeTierFilters.indexOf('prime')!==-1 && activeTierFilters.length===1) return EXPLORE_ICONS['prime'];
+      if(activeTierFilters.indexOf('constrained')!==-1) return EXPLORE_ICONS['constrained'];
+      if(currentOverlay==='Rich & Educated') return EXPLORE_ICONS['Rich & Educated'];
+      return '&#128205;';
+    }
+
+    function countFilteredDistricts(){
+      var scored = getScoredDistricts(currentCity, currentBiz, currentOverlay);
+      return scored.length;
+    }
+
+    function buildConfigHTML(){
+      var html = '';
+      // Exploration row
+      html += '<div class="ip-row"><div class="ip-row-label">Exploration</div>';
+      html += '<div class="ip-row-value">' + getExploreIcon() + ' ' + getExploreLabel() + '</div></div>';
+      // City row
+      var flag = CITY_FLAGS[currentCity] || '&#127758;';
+      html += '<div class="ip-row"><div class="ip-row-label">City</div>';
+      html += '<div class="ip-row-value">' + flag + ' ' + currentCity + '</div></div>';
+      // Business focus row
+      var bizIcon = EXPLORE_ICONS[currentBiz] || '&#128188;';
+      html += '<div class="ip-row"><div class="ip-row-label">Business focus</div>';
+      html += '<div class="ip-row-value">' + bizIcon + ' ' + currentBiz + '</div></div>';
+      return html;
+    }
+
+    function renderSavedInterests(){
+      var saved = getSavedInterests();
+      savedCountEl.textContent = saved.length + ' / ' + MAX_SAVED;
+      var html = '';
+      saved.forEach(function(item, idx){
+        var flag = CITY_FLAGS[item.city] || '&#127758;';
+        var label = item.city + ' · ' + item.biz + ' · ' + item.explore;
+        if(label.length > 32) label = label.substring(0,30) + '…';
+        html += '<div class="ip-saved-item" data-idx="'+idx+'" title="Click to load this interest">';
+        html += '<span class="ip-saved-item-text">' + flag + ' ' + label + '</span>';
+        html += '<button class="ip-saved-item-del" data-delidx="'+idx+'" title="Remove">&#128465;</button>';
+        html += '</div>';
+      });
+      var remaining = MAX_SAVED - saved.length;
+      if(remaining > 0){
+        html += '<div class="ip-saved-empty">+ ' + remaining + ' slot' + (remaining>1?'s':'') + ' remaining</div>';
+      }
+      savedList.innerHTML = html;
+
+      // Bind click to load
+      savedList.querySelectorAll('.ip-saved-item').forEach(function(el){
+        el.addEventListener('click', function(e){
+          if(e.target.classList.contains('ip-saved-item-del')) return;
+          var idx = parseInt(el.dataset.idx);
+          loadInterest(saved[idx]);
+        });
+      });
+      // Bind delete
+      savedList.querySelectorAll('.ip-saved-item-del').forEach(function(btn){
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          var idx = parseInt(btn.dataset.delidx);
+          saved.splice(idx, 1);
+          setSavedInterests(saved);
+          renderSavedInterests();
+          updateSaveButton();
+        });
+      });
+    }
+
+    function updateSaveButton(){
+      var saved = getSavedInterests();
+      var isDuplicate = saved.some(function(s){
+        return s.city===currentCity && s.biz===currentBiz && s.explore===getExploreLabel();
+      });
+      saveBtn.disabled = saved.length >= MAX_SAVED || isDuplicate;
+      if(isDuplicate) saveBtn.innerHTML = '&#9989; Saved';
+      else if(saved.length >= MAX_SAVED) saveBtn.innerHTML = '&#128278; Slots full';
+      else saveBtn.innerHTML = '&#128278; Save interest';
+    }
+
+    function loadInterest(item){
+      // Hide panel first so user sees the map fly
+      panel.classList.remove('show');
+
+      // Apply the saved configuration
+      currentCity = item.city;
+      currentBiz = item.biz;
+      currentOverlay = item.overlay || 'Full V&R';
+      activeTierFilters = item.tiers ? item.tiers.slice() : ['prime','strong'];
+
+      // Switch to map tab first
+      if(typeof switchTab==='function') switchTab('map');
+
+      // Sync all UI
+      var bizLbl = document.getElementById('bizLabel');
+      if(bizLbl) bizLbl.textContent = currentBiz;
+      buildDropdown('bizDrop',BIZ_TYPES,currentBiz,function(v){currentBiz=v;var bl=document.getElementById('bizLabel');if(bl)bl.textContent=v;renderMarkers();document.querySelectorAll('#bizChips .chip').forEach(function(c){c.classList.toggle('active',c.textContent===v)})});
+      document.querySelectorAll('#bizChips .chip').forEach(function(c){c.classList.toggle('active',c.textContent===currentBiz)});
+      var ovlLabel = document.getElementById('ovLabel');
+      if(ovlLabel) ovlLabel.textContent = currentOverlay;
+      if(typeof buildCityTabs==='function'){
+        buildCityTabs('mapCityBar',function(city){currentCity=city;renderMarkers()});
+        buildCityTabs('cardsCityBar',function(city){currentCity=city;renderCards()});
+        buildCityTabs('oppCityBar',function(city){currentCity=city;if(typeof renderOpportunityTab==='function') renderOpportunityTab()});
+      }
+
+      // Fly to the chosen zone
+      var cv = CITY_VIEWS[currentCity];
+      if(cv && typeof map!=='undefined'){
+        setTimeout(function(){
+          map.invalidateSize();
+          map.flyTo([cv.lat,cv.lng],13,{duration:1.5});
+        },200);
+      }
+
+      if(typeof initTierFilter==='function') initTierFilter();
+      renderMarkers();
+      renderCards();
+      if(typeof renderOpportunityTab==='function') renderOpportunityTab();
+
+      // Show panel again after the fly animation
+      setTimeout(function(){
+        showInterestPanel();
+      },1800);
+    }
+
+    window.showInterestPanel = function(){
+      currentInterest = {
+        city: currentCity,
+        biz: currentBiz,
+        overlay: currentOverlay,
+        tiers: activeTierFilters.slice(),
+        explore: getExploreLabel()
+      };
+      configRows.innerHTML = buildConfigHTML();
+      var count = countFilteredDistricts();
+      districtCount.innerHTML = '&#128205; ' + count + ' district' + (count!==1?'s':'') + ' found';
+      updateSaveButton();
+      renderSavedInterests();
+      // Count total combinations
+      var totalCombos = Object.keys(CITY_VIEWS).length * BIZ_TYPES.length;
+      hintEl.textContent = totalCombos + ' combinations to explore';
+      panel.classList.add('show');
+    };
+
+    // Save button
+    saveBtn.addEventListener('click', function(){
+      if(!currentInterest || saveBtn.disabled) return;
+      var saved = getSavedInterests();
+      if(saved.length >= MAX_SAVED) return;
+      // After first save, require a profile to save more
+      if(saved.length >= 1 && !getFirestoreUser()){
+        // Remove any existing popup first
+        var old = document.getElementById('ipRegisterPopup');
+        if(old) old.remove();
+        // Create popup overlay
+        var popup = document.createElement('div');
+        popup.id = 'ipRegisterPopup';
+        popup.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:10000;display:flex;align-items:center;justify-content:center;animation:fadeIn .3s ease';
+        var box = document.createElement('div');
+        box.style.cssText = 'background:#fff;border-radius:20px;padding:32px 28px;max-width:360px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative';
+        box.innerHTML = '<div style="font-size:48px;margin-bottom:12px">&#128100;</div>'
+          + '<h3 style="margin:0 0 8px;font-size:20px;color:#1e293b">Create a Free Profile</h3>'
+          + '<p style="margin:0 0 20px;font-size:14px;color:#64748b;line-height:1.5">Register to save more interests and unlock your full RE Intelligence experience.</p>'
+          + '<button id="ipGoRegister" style="width:100%;padding:12px;border:none;border-radius:12px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:10px;transition:transform .2s">Register now</button>'
+          + '<button id="ipPopupClose" style="width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#64748b;font-size:14px;cursor:pointer;transition:background .2s">Maybe later</button>';
+        popup.appendChild(box);
+        document.body.appendChild(popup);
+        // Close popup on backdrop click
+        popup.addEventListener('click', function(e){ if(e.target === popup) popup.remove(); });
+        // "Maybe later" closes popup
+        document.getElementById('ipPopupClose').addEventListener('click', function(){ popup.remove(); });
+        // "Register now" goes to profile tab
+        document.getElementById('ipGoRegister').addEventListener('click', function(){
+          popup.remove();
+          panel.classList.remove('show');
+          if(typeof switchTab==='function') switchTab('profile');
+        });
+        return;
+      }
+      saved.push(currentInterest);
+      setSavedInterests(saved);
+      renderSavedInterests();
+      updateSaveButton();
+    });
+
+    // Navigate — open Google Maps directions to current city
+    var navBtn = document.getElementById('ipNavigateBtn');
+    navBtn.addEventListener('click', function(){
+      var cv = CITY_VIEWS[currentCity];
+      if(cv){
+        window.open('https://www.google.com/maps/dir/?api=1&destination='+cv.lat+','+cv.lng, '_blank');
+      }
+    });
+
+    // Discover more — re-open wizard
+    discoverBtn.addEventListener('click', function(){
+      panel.classList.remove('show');
+      if(typeof openWizard==='function') openWizard();
+    });
+
+    // Close panel
+    closeBtn.addEventListener('click', function(){
+      panel.classList.remove('show');
+    });
+
+    // Load saved interests on page load (show panel if any exist)
+    var existingSaved = getSavedInterests();
+    if(existingSaved.length > 0){
+      renderSavedInterests();
     }
   })();
 
@@ -2711,6 +3086,7 @@ var firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 var firebaseAuth = firebase.auth();
+var firestore = firebase.firestore();
 
 // Current user profile (kept in memory, synced from Firebase + localStorage extras)
 var currentUserProfile = null;
