@@ -514,6 +514,9 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 #interestPanel{position:fixed;top:80px;right:16px;width:240px;z-index:8000;display:none;flex-direction:column;gap:10px;font-family:'Inter',system-ui,sans-serif;animation:ipSlideIn .4s ease}
 @keyframes ipSlideIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
 #interestPanel.show{display:flex}
+#ipMinTab{position:fixed;top:50%;right:0;transform:translateY(-50%);z-index:7999;display:none;writing-mode:vertical-rl;text-orientation:mixed;background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff;padding:14px 8px;border-radius:12px 0 0 12px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:-3px 0 12px rgba(245,158,11,.3);transition:all .2s;font-family:'Inter',system-ui,sans-serif;letter-spacing:.5px}
+#ipMinTab:hover{padding-right:12px;box-shadow:-4px 0 18px rgba(245,158,11,.4)}
+#ipMinTab.show{display:flex;align-items:center;gap:6px}
 .ip-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:14px 16px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
 .ip-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .ip-title{font-weight:700;font-size:13px;color:var(--txt);display:flex;align-items:center;gap:5px}
@@ -540,8 +543,12 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 .ip-saved-item-del{background:none;border:none;font-size:12px;color:#94a3b8;cursor:pointer;padding:2px;transition:color .2s}
 .ip-saved-item-del:hover{color:#ef4444}
 .ip-saved-empty{display:flex;align-items:center;justify-content:center;padding:6px 8px;border:1.5px dashed var(--border);border-radius:8px;font-size:10px;color:#94a3b8}
-@media(max-width:768px){#interestPanel{top:auto;bottom:70px;right:8px;left:8px;width:auto;flex-direction:row;gap:8px}
-.ip-card{flex:1;min-width:0}}
+@media(max-width:768px){#interestPanel{top:auto;bottom:60px;right:0;left:0;width:100%;flex-direction:column;gap:0;padding:0 10px 8px;max-height:45vh;overflow-y:auto;background:rgba(255,255,255,.97);border-top-left-radius:20px;border-top-right-radius:20px;box-shadow:0 -4px 20px rgba(0,0,0,.12)}
+.ip-card{border-radius:0;box-shadow:none;border:none;border-bottom:1px solid var(--border);padding:12px 6px;margin:0}
+.ip-card:last-child{border-bottom:none}
+.ip-actions{flex-wrap:nowrap;gap:6px}
+.ip-btn-save,.ip-btn-discover{padding:10px 6px;font-size:11px}
+}
 
 </style>
 </head>
@@ -573,6 +580,7 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
     <div id="ipSavedList"></div>
   </div>
 </div>
+<div id="ipMinTab">&#10024; Your Interest</div>
 <div class="content-wrap">
 <div class="header">
   <div class="hdr-row">
@@ -2433,6 +2441,8 @@ document.addEventListener("DOMContentLoaded",function(){
       // Count total combinations
       var totalCombos = Object.keys(CITY_VIEWS).length * BIZ_TYPES.length;
       hintEl.textContent = totalCombos + ' combinations to explore';
+      var mt = document.getElementById('ipMinTab');
+      if(mt) mt.classList.remove('show');
       panel.classList.add('show');
     };
 
@@ -2492,9 +2502,17 @@ document.addEventListener("DOMContentLoaded",function(){
       if(typeof openWizard==='function') openWizard();
     });
 
-    // Close panel
+    // Close panel — minimize to side tab
+    var minTab = document.getElementById('ipMinTab');
     closeBtn.addEventListener('click', function(){
       panel.classList.remove('show');
+      minTab.classList.add('show');
+    });
+
+    // Click minimized tab to re-open panel
+    minTab.addEventListener('click', function(){
+      minTab.classList.remove('show');
+      panel.classList.add('show');
     });
 
     // Load saved interests on page load (show panel if any exist)
