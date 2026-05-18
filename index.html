@@ -508,7 +508,18 @@ body{font-family:Inter,system-ui,sans-serif;background:linear-gradient(160deg,#e
 .wiz-dots{display:flex;gap:6px;align-items:center}
 .wiz-dot{width:8px;height:8px;border-radius:50%;background:#e2e8f0;transition:all .3s}
 .wiz-dot.active{background:var(--primary);width:20px;border-radius:4px}
-@media(max-width:600px){.wiz-card{border-radius:24px 24px 0 0;max-width:100%;align-self:flex-end;max-height:85vh}}
+@media(max-width:600px){.wiz-card{border-radius:24px 24px 0 0;max-width:100%;align-self:flex-end;max-height:80vh}
+.wiz-body{padding:18px 16px 12px}
+.wiz-step-title{font-size:17px;margin-bottom:2px}
+.wiz-step-sub{font-size:12px;margin-bottom:12px}
+.wiz-options{gap:6px}
+.wiz-opt{padding:10px 12px;gap:10px;border-radius:12px}
+.wiz-opt-icon{font-size:18px;width:30px;height:30px;border-radius:8px}
+.wiz-opt-title{font-size:13px}
+.wiz-opt-desc{font-size:11px;line-height:1.3}
+.wiz-footer{padding:10px 16px 16px}
+.wiz-next{padding:10px 22px;font-size:13px;border-radius:10px}
+.wiz-skip{top:12px;right:12px;font-size:12px}}
 
 /* ─── Interest Summary Panel ─── */
 #interestPanel{position:fixed;top:80px;right:16px;width:240px;z-index:8000;display:none;flex-direction:column;gap:10px;font-family:'Inter',system-ui,sans-serif;animation:ipSlideIn .4s ease}
