@@ -2161,6 +2161,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
     function closeWizard(){
       overlay.classList.remove('show');
+      localStorage.setItem('rei_onboarded_v4','1');
     }
 
     function openWizard(){
@@ -2205,9 +2206,11 @@ document.addEventListener("DOMContentLoaded",function(){
     // Expose globally so other parts can trigger it
     window.openWizard = openWizard;
 
-    // Show wizard on every page load
-    renderWizStep();
-    setTimeout(function(){ overlay.classList.add('show'); },600);
+    // Show wizard on first visit only; returning visitors use the floating button
+    if(!localStorage.getItem('rei_onboarded_v4')){
+      renderWizStep();
+      setTimeout(function(){ overlay.classList.add('show'); },600);
+    }
   })();
 
   // ─── Interest Summary Panel Logic ───────────────────────────────────
