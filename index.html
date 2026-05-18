@@ -2190,6 +2190,9 @@ document.addEventListener("DOMContentLoaded",function(){
 
     skipBtn.addEventListener('click',function(){
       closeWizard();
+      // Show the minimized side tab so users know they can come back
+      var mt = document.getElementById('ipMinTab');
+      if(mt) mt.classList.add('show');
     });
 
     // Floating wizard button (bottom-right)
